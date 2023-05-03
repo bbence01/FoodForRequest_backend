@@ -9,6 +9,6 @@ namespace FoodForRequest.Data
         IEnumerable<FoodRequest> GetAll();
         FoodRequest GetOne(string id);
         void Update(FoodRequest foodrequest);
-        IEnumerable<FoodRequest> GetPurchasedItems(string userId);
+    //    IEnumerable<FoodRequest> GetPurchasedItems(string userId);
     }
 }

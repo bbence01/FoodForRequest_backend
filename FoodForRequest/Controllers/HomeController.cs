@@ -11,7 +11,7 @@ namespace FoodForRequest.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<FoodUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
         public HomeController(ILogger<HomeController> logger)

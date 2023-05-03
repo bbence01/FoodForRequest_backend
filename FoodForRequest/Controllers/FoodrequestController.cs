@@ -20,10 +20,10 @@ namespace FoodForRequest.Controllers
     {
         private readonly IFoodRequestRepository repository;
 
-        private readonly UserManager<User> userManager;
+        private readonly UserManager<FoodUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
 
-        public FoodrequestController(IFoodRequestRepository repository, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public FoodrequestController(IFoodRequestRepository repository, UserManager<FoodUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             this.repository = repository;
             this.userManager = userManager;
@@ -56,7 +56,7 @@ namespace FoodForRequest.Controllers
                 {
                     Name = food.Name,
                     Description = food.Description,
-                    SellerId = userManager.GetUserId(User),
+                    RequestorId = userManager.GetUserId(User),
                 };
                 using (var stream = picture.OpenReadStream())
                 {
@@ -77,7 +77,7 @@ namespace FoodForRequest.Controllers
         public async Task<IActionResult> Edit(string id)
         {
             var food = this.repository.GetOne(id);
-            if (food != null && (food.Seller.Id == userManager.GetUserId(User) || User.IsInRole("Admin")))
+            if (food != null && (food.Requestor.Id == userManager.GetUserId(User) || User.IsInRole("Admin")))
             {
                 return Ok(food);
             }
@@ -91,12 +91,12 @@ namespace FoodForRequest.Controllers
             {
                 var old = this.repository.GetOne(id);
 
-                if (old.Seller.Id != userManager.GetUserId(User) && !User.IsInRole("Admin"))
+                if (old.Requestor.Id != userManager.GetUserId(User) && !User.IsInRole("Admin"))
                     return RedirectToAction(nameof(Index));
 
                 old.Name = food.Name;
                 old.Description = food.Description;
-                old.IsSold = food.IsSold;
+                old.IsDone = food.IsDone;
 
                 this.repository.Update(old);
                 return Ok(food);
@@ -110,7 +110,7 @@ namespace FoodForRequest.Controllers
         {
             var food = this.repository.GetOne(id);
 
-            if (food != null && (food.Seller.Id == userManager.GetUserId(User) || User.IsInRole("Admin")))
+            if (food != null && (food.Requestor.Id == userManager.GetUserId(User) || User.IsInRole("Admin")))
             {
                 this.repository.Delete(food);
             }
@@ -126,10 +126,10 @@ namespace FoodForRequest.Controllers
         {
             var food = this.repository.GetOne(foodid);
 
-            if (food == null || food.Seller.Id != userManager.GetUserId(User))
+            if (food == null || food.Requestor.Id != userManager.GetUserId(User))
                 return Ok();
 
-            food.IsSold = true;
+            food.IsDone = true;
             this.repository.Update(food);
 
             return Ok();
@@ -146,15 +146,15 @@ namespace FoodForRequest.Controllers
 
             return new FileContentResult(p.Picture, p.PictureContentType);
         }
-
+        /*
         [Authorize]
         [HttpGet("purchused")]
         public IActionResult GetPurchasedItems()
         {
-            var food = this.repository.GetPurchasedItems(userManager.GetUserId(User));
+            var food = this.repository.GetPurchasedItems(userManager.GetUserId(FoodUser));
 
             return Ok(food);
-        }
+        }*/
         
     }
 }

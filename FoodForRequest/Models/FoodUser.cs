@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FoodForRequest.Models
 {
-    public class User : IdentityUser
+    public class FoodUser : IdentityUser
     {
+
+      
         public string FirstName { get; set; }
 
         public string LastName { get; set; }

@@ -19,7 +19,7 @@ namespace FoodForRequest.Data
 
         public IEnumerable<FoodRequest> GetAll()
         {
-            return context.Foodrequests;
+            return context.Foodrequests.ToList();
         }
 
         public FoodRequest GetOne(string id)
@@ -30,16 +30,16 @@ namespace FoodForRequest.Data
         public void Update(FoodRequest product)
         {
             FoodRequest old = this.GetOne(product.Id);
-            old.IsSold = product.IsSold;
+            old.IsDone = product.IsDone;
             old.Description = product.Description;
             old.Name = product.Name;
             this.context.SaveChanges();
         }
-
+        /*
         public IEnumerable<FoodRequest> GetPurchasedItems(string userId)
         {
-            return this.GetAll().Where(p => p.IsSold && p.HighestBid != null && p.HighestBid.UserId == userId);
-        }
+            return this.GetAll().Where(p => p.IsDone && p.HighestBid != null && p.HighestBid.ContractorId == userId);
+        }*/
 
         public void Delete(FoodRequest product)
         {

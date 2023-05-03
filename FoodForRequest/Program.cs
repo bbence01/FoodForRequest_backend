@@ -48,7 +48,7 @@ builder.Services.AddCors(options =>
         });
 });
 
-builder.Services.AddDefaultIdentity<User>(options => {
+builder.Services.AddDefaultIdentity<FoodUser>(options => {
     options.SignIn.RequireConfirmedAccount = false;
     options.Password.RequireDigit = false;
     options.Password.RequiredLength = 6;

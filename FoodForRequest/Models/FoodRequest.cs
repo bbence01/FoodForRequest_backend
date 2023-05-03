@@ -7,37 +7,48 @@ namespace FoodForRequest.Models
     public class FoodRequest
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
-        [Required]
+
         [StringLength(100)]
         public string Name { get; set; }
 
-        [Required]
+        
         [StringLength(1000)]
         [MinLength(5)]
         public string Description { get; set; }
 
-        [DefaultValue(false)]
-        public bool IsSold { get; set; }
+        [NotMapped]
+        public string[] ingridients { get; set; }
 
-        [Required]
+        [DefaultValue(false)]
+        public bool IsDone { get; set; }
+
+        [NotMapped]
         public byte[] Picture { get; set; }
 
-        [Required]
         public string PictureContentType { get; set; }
 
-        [Required]
-        [ForeignKey(nameof(User))]
-        public string SellerId { get; set; }
-        [NotMapped]
-        public virtual User Seller { get; set; }
+        [ForeignKey(nameof(FoodUser))]
+        public string RequestorId { get; set; }
+
+
+
 
         [NotMapped]
-        public virtual List<Offer> Bids { get; set; }
+        public virtual FoodUser Requestor { get; set; }
+
+
+
+
+
+
 
         [NotMapped]
-        public Offer? HighestBid { get => Bids?.MaxBy(b => b.Value); }
+        public virtual List<Offer> Offers { get; set; }
+
+       
 
         public FoodRequest()
         {

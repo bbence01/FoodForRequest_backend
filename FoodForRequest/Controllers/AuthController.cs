@@ -1,4 +1,5 @@
 ﻿using FoodForRequest.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -14,15 +15,16 @@ namespace FoodForRequest.Controllers
     public class AuthController : ControllerBase
     {
 
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signManager;
+        private readonly UserManager<FoodUser> _userManager;
+        private readonly SignInManager<FoodUser> _signManager;
 
-        public AuthController(UserManager<User> userManager, SignInManager<User> signManager)
+        public AuthController(UserManager<FoodUser> userManager, SignInManager<FoodUser> signManager)
         {
             _userManager = userManager;
             _signManager = signManager;
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginViewModel model)
         {
@@ -39,7 +41,7 @@ namespace FoodForRequest.Controllers
                 {
                     claim.Add(new Claim(ClaimTypes.Role, role));
                 }
-                var signinKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("WordQuizSecurityKey"));
+                var signinKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("FoodForRequestSecurityKey"));
                 var token = new JwtSecurityToken(
                  issuer: "http://www.security.org", audience: "http://www.security.org",
                  claims: claim, expires: DateTime.Now.AddMinutes(60),
@@ -55,10 +57,11 @@ namespace FoodForRequest.Controllers
             return Unauthorized();
         }
 
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
         {
-            var user = new User
+            var user = new FoodUser
             {
                 Email = model.Email,
                 UserName = model.UserName,
@@ -70,6 +73,7 @@ namespace FoodForRequest.Controllers
             return Ok();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [Route("logout")]
         public async Task<IActionResult> Logout()

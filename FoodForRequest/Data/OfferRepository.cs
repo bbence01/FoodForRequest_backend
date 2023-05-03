@@ -32,5 +32,16 @@ namespace FoodForRequest.Data
             this.context.Offers.Remove(bid);
             this.context.SaveChanges();
         }
+
+        public void Delete(string id)
+  
+        {
+            var word = context.Offers.Find(id);
+            if (word != null)
+            {
+                context.Offers.Remove(word);
+                context.SaveChanges();
+            }
+        }
     }
 }

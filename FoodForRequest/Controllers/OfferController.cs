@@ -19,23 +19,79 @@ namespace FoodForRequest.Controllers
     [Route("api/[controller]")]
     public class OfferController : Controller
     {
-        IFoodRequestRepository productRepo;
-        IOfferRepository bidRepo;
-        private readonly UserManager<User> userManager;
+        IFoodRequestRepository foodRepo;
+        IOfferRepository offerRepo;
+        private readonly UserManager<FoodUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
 
-        public OfferController(IFoodRequestRepository productRepo, IOfferRepository bidRepo, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public OfferController(IFoodRequestRepository foodRepo, IOfferRepository offerRepo, UserManager<FoodUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            this.productRepo = productRepo;
-            this.bidRepo = bidRepo;
+            this.foodRepo = foodRepo;
+            this.offerRepo = offerRepo;
             this.userManager = userManager;
             this.roleManager = roleManager;
         }
 
-        [HttpGet]
+
+
+         //GET: api/<WordController>
+        [HttpGet("all")]
+        public async Task<IEnumerable<Offer>> GetAllWord()
+        {
+            return  offerRepo.GetAll();
+          }
+
+         //GET api/<WordController>/5
+        [HttpGet("{id}")]
+        public Offer? GetWord(string id)
+        {
+            return offerRepo.GetOne(id);
+        }
+
+        
+      
+
+        // POST api/<WordController>
+        [HttpPost]
+        public async void AddWord([FromBody] Offer value)
+        {
+
+            offerRepo.Create(value);
+        }
+
+
+
+
+        /*
+        // PUT api/<WordController>/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditWord(int id, [FromBody] Offer value)
+        {
+
+            offerRepo.UpdateWord(value);
+            return Ok();
+        }*/
+
+        // DELETE api/<WordController>/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteWord(string id)
+        {
+            offerRepo.Delete(id);
+            return Ok();
+
+        }
+
+
+
+
+
+
+
+        /*
+        [HttpPost]
         public IActionResult Create(string productId)
         {
-            var product = this.productRepo.GetOne(productId);
+            var product = this.foodRepo.GetOne(productId);
 
             if (product != null)
             {
@@ -49,7 +105,7 @@ namespace FoodForRequest.Controllers
                 return Ok();
             }
         }
-
+        
         [HttpPost]
         public IActionResult Create(BiddingViewModel newBid)
         {
@@ -61,7 +117,7 @@ namespace FoodForRequest.Controllers
                 {
                     Value = newBid.Value,
                     ProductId = newBid.ProductId,
-                    UserId = userManager.GetUserId(User)
+                    UserId = userManager.GetUserId(FoodUser)
                 };
 
                 this.bidRepo.Create(bid);
@@ -69,6 +125,6 @@ namespace FoodForRequest.Controllers
                 return Ok();
             }
             else { return Ok(newBid); }
-        }
+        }*/
     }
 }
