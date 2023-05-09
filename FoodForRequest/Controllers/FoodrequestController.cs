@@ -49,7 +49,8 @@ namespace FoodForRequest.Controllers
                     Id = r.Id,
                     Name = r.Name,
                     Description = r.Description,
-                    RequestorId = r.RequestorId
+                    RequestorId = r.RequestorId,
+                 
 
                 });
             }

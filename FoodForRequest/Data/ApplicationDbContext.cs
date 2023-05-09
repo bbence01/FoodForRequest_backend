@@ -14,6 +14,9 @@ namespace FoodForRequest.Data
         public DbSet<Offer> Offers { get; set; }
 
         public DbSet<Comment> Comments { get; set; }
+
+        public DbSet<Ingredient> Ingredients { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -47,6 +50,12 @@ namespace FoodForRequest.Data
                    .WithMany(u => u.Comments)
                    .HasForeignKey(p => p.ContractorId)
                    .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Ingredient>().HasOne(p => p.Product)
+                  .WithMany(u => u.Ingridients)
+                  .HasForeignKey(p => p.ProductId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
 
 
             builder.Entity<IdentityRole>().HasData(
@@ -115,7 +124,9 @@ namespace FoodForRequest.Data
                 Description = "Nyers hal",
                 RequestorId = bela.Id,
                 Picture = this.LoadSeedPicture("Seed/oldphone.jpg"),
-                PictureContentType = "Image/jpeg"
+                PictureContentType = "Image/jpeg",
+                //Ingridients = new List<string> { "Hal","Rizs"}
+                
             };
 
             FoodRequest p2 = new FoodRequest()
@@ -126,7 +137,8 @@ namespace FoodForRequest.Data
                 Description = "Sülthus",
                 RequestorId = bela.Id,
                 Picture = this.LoadSeedPicture("Seed/oldbike.jpg"),
-                PictureContentType = "Image/jpeg"
+                PictureContentType = "Image/jpeg",
+               // Ingridients = new List<string> { "Marha", "Bors" }
             };
 
             FoodRequest p3 = new FoodRequest()
@@ -136,7 +148,8 @@ namespace FoodForRequest.Data
                 Description = "Tosted.",
                 RequestorId = jozsi.Id,
                 Picture = this.LoadSeedPicture("Seed/oldtoaster.jpg"),
-                PictureContentType = "Image/jpeg"
+                PictureContentType = "Image/jpeg",
+               // Ingridients = new List<string> { "Tojás", "Kenyér" }
             };
 
             FoodRequest p4 = new FoodRequest()
@@ -146,7 +159,8 @@ namespace FoodForRequest.Data
                 Description = "All the chocklate",
                 RequestorId = jozsi.Id,
                 Picture = this.LoadSeedPicture("Seed/oldlaptop.jpg"),
-                PictureContentType = "Image/png"
+                PictureContentType = "Image/png",
+               // Ingridients = new List<string> { "Chokolate", "vaj","List" }
             };
 
             FoodRequest p5 = new FoodRequest()
@@ -156,7 +170,8 @@ namespace FoodForRequest.Data
                 Description = "I want to see myself eating",
                 RequestorId = jozsi.Id,
                 Picture = this.LoadSeedPicture("Seed/mirrorforsale.jpg"),
-                PictureContentType = "Image/jpeg"
+                PictureContentType = "Image/jpeg",
+               // Ingridients = new List<string> { "vaj", "List" }
             };
 
             builder.Entity<FoodRequest>().HasData(p, p2, p3, p4, p5);
@@ -199,11 +214,38 @@ namespace FoodForRequest.Data
             };
 
 
+            Ingredient i1 = new Ingredient()
+            {
+                Name = "Hal",
+                ProductId = p.Id,
+                Description = "Tuna"
+            };
+
+            Ingredient i2 = new Ingredient()
+            {
+                Name = "Rizs",
+                ProductId = p.Id,
+                Description = "Rizs"
+            };
+
+
+            Ingredient i3 = new Ingredient()
+            {
+                Name = "Choko",
+                ProductId = p4.Id,
+                Description = "Dark"
+            };
+
+
+
+
             builder.Entity<Offer>().HasData(b1, b2, b3);
 
 
 
             builder.Entity<Comment>().HasData(c1, c2);
+
+            builder.Entity<Ingredient>().HasData(i1, i2, i3);
 
             base.OnModelCreating(builder);
         }

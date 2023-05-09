@@ -1,0 +1,90 @@
+﻿using FoodForRequest.Data;
+using FoodForRequest.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
+namespace FoodForRequest.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class IngridientController : ControllerBase
+    {
+
+        private readonly IFoodRequestRepository foodRepository;
+        private readonly IOfferRepository offerRepository;
+        private readonly IingridientRepository ingridientRepository;
+
+
+        private readonly UserManager<FoodUser> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
+
+
+        public IngridientController(IFoodRequestRepository repository, IOfferRepository offerRepository, IingridientRepository ingrep, UserManager<FoodUser> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            this.foodRepository = repository;
+            this.userManager = userManager;
+            this.roleManager = roleManager;
+            this.ingridientRepository = ingrep;
+            this.offerRepository = offerRepository;
+        }
+
+
+        // GET: api/<IngridientController>
+        [HttpGet("GetAll")]
+        public IEnumerable<IngredientViewModel> Get()
+        {
+           
+
+            var ingredient = ingridientRepository.GetAll();
+
+            var ingredientInf = new List<IngredientViewModel>();
+            foreach (var ing in ingredient)
+            {
+                ingredientInf.Add(new IngredientViewModel
+                {
+                    Id = ing.Id,
+                    Description = ing.Description,
+                    Name = ing.Name,
+                    ProductId = ing.ProductId,
+
+                });
+            }
+
+            return ingredientInf;
+        }
+
+        // GET api/<IngridientController>/5
+        [HttpGet("GetOne/{id}")]
+        public Ingredient Get(string id)
+        {
+            return ingridientRepository.GetOne(id);
+        }
+
+        // POST api/<IngridientController>
+        [HttpPost("CreateComment")]
+        public void Post([FromBody] Ingredient value)
+        {
+
+            ingridientRepository.Create(value);
+
+        }
+        /*
+        // PUT api/<IngridientController>/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] string value)
+        {
+
+        }
+        */
+        // DELETE api/<IngridientController>/5
+        [HttpDelete("Delete/{id}")]
+        public void Delete(string id)
+        {
+
+            ingridientRepository.Delete(id);
+
+        }
+    }
+}
