@@ -65,7 +65,7 @@ namespace FoodForRequest.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("CreateFood")]
+        [HttpPost("CreateFd")]
         public IActionResult Create([FromBody] FoodRequest food, IFormFile picture)
         {
             if (ModelState.IsValid)

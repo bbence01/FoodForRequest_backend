@@ -9,6 +9,8 @@ namespace FoodForRequest.Models
     public class FoodUser : IdentityUser
     {
 
+        public string FoodUserName { get; set; }
+
 
         public string FirstName { get; set; }
 

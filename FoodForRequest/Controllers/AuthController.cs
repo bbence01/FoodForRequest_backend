@@ -12,7 +12,7 @@ namespace FoodForRequest.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AuthController : ControllerBase
+    public class AuthController : Controller
     {
 
         private readonly UserManager<FoodUser> _userManager;
@@ -24,7 +24,6 @@ namespace FoodForRequest.Controllers
             _signManager = signManager;
         }
 
-        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginViewModel model)
         {
@@ -57,23 +56,24 @@ namespace FoodForRequest.Controllers
             return Unauthorized();
         }
 
-        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
         {
             var user = new FoodUser
             {
                 Email = model.Email,
-                UserName = model.UserName,
+                UserName = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
-             
+                FoodUserName = model.FoodUserName
+
+
+
             };
             await _userManager.CreateAsync(user, model.Password);
-            await _userManager.AddToRoleAsync(user, "Player");
+            await _userManager.AddToRoleAsync(user, "User");
             return Ok();
         }
 
-        [AllowAnonymous]
         [HttpPost]
         [Route("logout")]
         public async Task<IActionResult> Logout()

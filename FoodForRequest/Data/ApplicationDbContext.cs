@@ -51,7 +51,7 @@ namespace FoodForRequest.Data
 
             builder.Entity<IdentityRole>().HasData(
                  new { Id = "1", Name = "Admin", NormalizedName = "ADMIN" },
-                 new { Id = "2", Name = "Player", NormalizedName = "PLAYER" }
+                 new { Id = "2", Name = "User", NormalizedName = "USER" }
             );
 
             PasswordHasher<FoodUser> ph = new PasswordHasher<FoodUser>();
@@ -61,6 +61,7 @@ namespace FoodForRequest.Data
                 Email = "seedplayer@gmail.com",
                 EmailConfirmed = true,
                 UserName = "seedplayer@gmail.com",                
+                FoodUserName = "SeedPlayer",
                 NormalizedUserName = "SEEDPLAYER@gmail.com"
             };
             seed.PasswordHash = ph.HashPassword(seed, "almafa123");
@@ -72,6 +73,7 @@ namespace FoodForRequest.Data
                 EmailConfirmed = true,
                 UserName = "kisbela@gmail.com",
                 NormalizedUserName = "KISBELA@GMAIL.COM",
+                FoodUserName = "kisbela@gmail.com",
                 FirstName = "Béla",
                 LastName = "Kiss",
                 PasswordHash = hasher.HashPassword(null, "Pa$$w0rd")
@@ -83,6 +85,7 @@ namespace FoodForRequest.Data
                 UserName = "jozsefjozsika@gmail.com",
                 EmailConfirmed = true,
                 NormalizedUserName = "JOZSEFJOZSIKA@GMAIL.COM",
+                FoodUserName = "jozsefjozsika@gmail.com",
                 FirstName = "József",
                 LastName = "Kelemen",
                 PasswordHash = hasher.HashPassword(null, "password")
@@ -95,6 +98,8 @@ namespace FoodForRequest.Data
                 UserName = "ferkoberko@gmail.com",
                 EmailConfirmed = true,
                 NormalizedUserName = "FERKOBERKO@GMAIL.COM",
+                FoodUserName = "ferkoberko@gmail.com",
+
                 FirstName = "Ferenc",
                 LastName = "Kovács",
                 PasswordHash = hasher.HashPassword(null, "password")
