@@ -93,7 +93,7 @@ namespace WordQuiz.Controllers
 
         // GET api/<PlayerController>
         [HttpGet]
-       // [Authorize]
+        [Authorize]
         public async Task<object> GetPlayer()
         {
             var authHeader = HttpContext.Request.Headers["Authorization"];
