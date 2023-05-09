@@ -13,6 +13,7 @@ using FoodForRequest.Hubs;
 using FoodForRequest.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System.Numerics;
+using FoodForRequest.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +38,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddTransient<IFoodRequestRepository, FoodrequestRepository>();
 builder.Services.AddTransient<IOfferRepository, OfferRepository>();
+builder.Services.AddTransient<ICommentRepository, CommentRepository>();
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(
@@ -76,7 +78,7 @@ builder.Services.AddAuthentication(option =>
         ValidAudience = "http://www.security.org",
         ValidIssuer = "http://www.security.org",
         IssuerSigningKey = new SymmetricSecurityKey
-      (Encoding.UTF8.GetBytes("WordQuizSecurityKey"))
+      (Encoding.UTF8.GetBytes("FoodForRequestSecurityKey"))
     };
 });
 
@@ -107,5 +109,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=FoodRequest}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+
 
 app.Run();

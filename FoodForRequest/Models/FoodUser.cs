@@ -9,7 +9,7 @@ namespace FoodForRequest.Models
     public class FoodUser : IdentityUser
     {
 
-      
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -23,5 +23,9 @@ namespace FoodForRequest.Models
         [NotMapped]
         [ValidateNever]
         public virtual List<Offer> Offers { get; set; }
+
+        [NotMapped]
+        [ValidateNever]
+        public virtual List<Comment> Comments { get; set; }
     }
 }

@@ -12,6 +12,8 @@ namespace FoodForRequest.Data
         public DbSet<FoodUser> Users { get; set; }
         public DbSet<FoodRequest> Foodrequests { get; set; }
         public DbSet<Offer> Offers { get; set; }
+
+        public DbSet<Comment> Comments { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -25,6 +27,7 @@ namespace FoodForRequest.Data
                 .HasForeignKey(p => p.RequestorId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+
             builder.Entity<Offer>().HasOne(p => p.Product)
                     .WithMany(u => u.Offers)
                     .HasForeignKey(p => p.ProductId)
@@ -34,6 +37,17 @@ namespace FoodForRequest.Data
                     .WithMany(u => u.Offers)
                     .HasForeignKey(p => p.ContractorId)
                     .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Comment>().HasOne(p => p.Product)
+                  .WithMany(u => u.Comments)
+                  .HasForeignKey(p => p.ProductId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Comment>().HasOne(p => p.User)
+                   .WithMany(u => u.Comments)
+                   .HasForeignKey(p => p.ContractorId)
+                   .OnDelete(DeleteBehavior.Cascade);
+
 
             builder.Entity<IdentityRole>().HasData(
                  new { Id = "1", Name = "Admin", NormalizedName = "ADMIN" },
@@ -55,6 +69,7 @@ namespace FoodForRequest.Data
             var bela = new FoodUser()
             {
                 Id = Guid.NewGuid().ToString(),
+                EmailConfirmed = true,
                 UserName = "kisbela@gmail.com",
                 NormalizedUserName = "KISBELA@GMAIL.COM",
                 FirstName = "Béla",
@@ -66,6 +81,7 @@ namespace FoodForRequest.Data
             {
                 Id = Guid.NewGuid().ToString(),
                 UserName = "jozsefjozsika@gmail.com",
+                EmailConfirmed = true,
                 NormalizedUserName = "JOZSEFJOZSIKA@GMAIL.COM",
                 FirstName = "József",
                 LastName = "Kelemen",
@@ -77,6 +93,7 @@ namespace FoodForRequest.Data
 
                 Id = Guid.NewGuid().ToString(),
                 UserName = "ferkoberko@gmail.com",
+                EmailConfirmed = true,
                 NormalizedUserName = "FERKOBERKO@GMAIL.COM",
                 FirstName = "Ferenc",
                 LastName = "Kovács",
@@ -89,8 +106,8 @@ namespace FoodForRequest.Data
             FoodRequest p = new FoodRequest()
             {
                 Id = Guid.NewGuid().ToString(),
-                Name = "My old phone",
-                Description = "My old Samsung Galaxy S6 in good condition, barely touched",
+                Name = "Susi",
+                Description = "Nyers hal",
                 RequestorId = bela.Id,
                 Picture = this.LoadSeedPicture("Seed/oldphone.jpg"),
                 PictureContentType = "Image/jpeg"
@@ -100,8 +117,8 @@ namespace FoodForRequest.Data
             {
                 Id = Guid.NewGuid().ToString(),
 
-                Name = "Brand new bike",
-                Description = "New mountain bike for sale, I accept trade for PlayStation 5.",
+                Name = "Stake",
+                Description = "Sülthus",
                 RequestorId = bela.Id,
                 Picture = this.LoadSeedPicture("Seed/oldbike.jpg"),
                 PictureContentType = "Image/jpeg"
@@ -110,8 +127,8 @@ namespace FoodForRequest.Data
             FoodRequest p3 = new FoodRequest()
             {Id = "3",
 
-                Name = "Toaster",
-                Description = "Brand new toaster for sale, don't worry it's not on fire anymore. I threw it into the bathtub. Will trade for coffin.",
+                Name = "Toast",
+                Description = "Tosted.",
                 RequestorId = jozsi.Id,
                 Picture = this.LoadSeedPicture("Seed/oldtoaster.jpg"),
                 PictureContentType = "Image/jpeg"
@@ -120,8 +137,8 @@ namespace FoodForRequest.Data
             FoodRequest p4 = new FoodRequest()
             {Id = "4",
 
-                Name = "Laptop",
-                Description = "I'm replacing my old laptop, works perfectly, comes with cracked windows.",
+                Name = "Chocklate ckae",
+                Description = "All the chocklate",
                 RequestorId = jozsi.Id,
                 Picture = this.LoadSeedPicture("Seed/oldlaptop.jpg"),
                 PictureContentType = "Image/png"
@@ -130,8 +147,8 @@ namespace FoodForRequest.Data
             FoodRequest p5 = new FoodRequest()
             {Id = "5",
 
-                Name = "Vintage Mirror",
-                Description = "Mirror for sale. Dog NOT included, STOP ASKING!",
+                Name = "Mirror ckae",
+                Description = "I want to see myself eating",
                 RequestorId = jozsi.Id,
                 Picture = this.LoadSeedPicture("Seed/mirrorforsale.jpg"),
                 PictureContentType = "Image/jpeg"
@@ -155,12 +172,33 @@ namespace FoodForRequest.Data
 
             Offer b3 = new Offer()
             {
-                
+
                 ProductId = p4.Id,
                 ContractorId = ferko.Id
             };
 
+
+
+            Comment c1 = new Comment()
+            {
+                Text="Hi",
+                ProductId = p3.Id,
+                ContractorId = ferko.Id
+            };
+
+            Comment c2 = new Comment()
+            {
+                Text = "Hello",
+                ProductId = p4.Id,
+                ContractorId = ferko.Id
+            };
+
+
             builder.Entity<Offer>().HasData(b1, b2, b3);
+
+
+
+            builder.Entity<Comment>().HasData(c1, c2);
 
             base.OnModelCreating(builder);
         }

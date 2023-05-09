@@ -22,6 +22,49 @@ namespace FoodForRequest.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("FoodForRequest.Models.Comment", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ContractorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContractorId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Comments");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "cbe49fcb-7565-45e1-b90b-b0366b491e67",
+                            ContractorId = "1ae07ef3-0a12-43b4-98a2-313b4b43801f",
+                            ProductId = "3",
+                            Text = "Hi"
+                        },
+                        new
+                        {
+                            Id = "becce080-6fe2-4e30-bd9e-adf11d899376",
+                            ContractorId = "1ae07ef3-0a12-43b4-98a2-313b4b43801f",
+                            ProductId = "4",
+                            Text = "Hello"
+                        });
+                });
+
             modelBuilder.Entity("FoodForRequest.Models.FoodRequest", b =>
                 {
                     b.Property<string>("Id")
@@ -58,48 +101,48 @@ namespace FoodForRequest.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "539e0f73-4441-40df-9245-4ceac92446b4",
-                            Description = "My old Samsung Galaxy S6 in good condition, barely touched",
+                            Id = "ac50a43b-71ac-4ac0-878b-8d69a2f2c0c7",
+                            Description = "Nyers hal",
                             IsDone = false,
-                            Name = "My old phone",
+                            Name = "Susi",
                             PictureContentType = "Image/jpeg",
-                            RequestorId = "04c25340-74dd-424f-b919-d3cbf2e1c130"
+                            RequestorId = "c596566e-0c34-4065-a8f6-3284a80979d1"
                         },
                         new
                         {
-                            Id = "0b903017-4cc1-4d97-87cf-ce90ce91eba6",
-                            Description = "New mountain bike for sale, I accept trade for PlayStation 5.",
+                            Id = "0d4fa37b-ad82-437f-9fad-e275fa3ac850",
+                            Description = "Sülthus",
                             IsDone = false,
-                            Name = "Brand new bike",
+                            Name = "Stake",
                             PictureContentType = "Image/jpeg",
-                            RequestorId = "04c25340-74dd-424f-b919-d3cbf2e1c130"
+                            RequestorId = "c596566e-0c34-4065-a8f6-3284a80979d1"
                         },
                         new
                         {
                             Id = "3",
-                            Description = "Brand new toaster for sale, don't worry it's not on fire anymore. I threw it into the bathtub. Will trade for coffin.",
+                            Description = "Tosted.",
                             IsDone = false,
-                            Name = "Toaster",
+                            Name = "Toast",
                             PictureContentType = "Image/jpeg",
-                            RequestorId = "b1010805-86b0-4496-8860-83587efd90ac"
+                            RequestorId = "6b522d5a-5622-4f00-9ba0-371834a33b73"
                         },
                         new
                         {
                             Id = "4",
-                            Description = "I'm replacing my old laptop, works perfectly, comes with cracked windows.",
+                            Description = "All the chocklate",
                             IsDone = false,
-                            Name = "Laptop",
+                            Name = "Chocklate ckae",
                             PictureContentType = "Image/png",
-                            RequestorId = "b1010805-86b0-4496-8860-83587efd90ac"
+                            RequestorId = "6b522d5a-5622-4f00-9ba0-371834a33b73"
                         },
                         new
                         {
                             Id = "5",
-                            Description = "Mirror for sale. Dog NOT included, STOP ASKING!",
+                            Description = "I want to see myself eating",
                             IsDone = false,
-                            Name = "Vintage Mirror",
+                            Name = "Mirror ckae",
                             PictureContentType = "Image/jpeg",
-                            RequestorId = "b1010805-86b0-4496-8860-83587efd90ac"
+                            RequestorId = "6b522d5a-5622-4f00-9ba0-371834a33b73"
                         });
                 });
 
@@ -131,23 +174,23 @@ namespace FoodForRequest.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1216b567-09e9-4c68-a3b6-14dec86ff5fe",
+                            Id = "31db8461-aa89-44cf-9278-1a5d9aa0df56",
                             Choosen = false,
-                            ContractorId = "04c25340-74dd-424f-b919-d3cbf2e1c130",
+                            ContractorId = "c596566e-0c34-4065-a8f6-3284a80979d1",
                             ProductId = "3"
                         },
                         new
                         {
-                            Id = "b1478c26-6ef7-4894-b6a8-cf08747f0638",
+                            Id = "6cc3b63d-a154-442c-9984-bd3721e250c5",
                             Choosen = false,
-                            ContractorId = "5c232873-a758-4fc0-8cd5-bb55b500ac41",
+                            ContractorId = "1ae07ef3-0a12-43b4-98a2-313b4b43801f",
                             ProductId = "3"
                         },
                         new
                         {
-                            Id = "0aa928ec-c378-49ce-9b8b-4938a9faca09",
+                            Id = "e2993cd0-9d5c-43a0-bf82-b8356ba94b1a",
                             Choosen = false,
-                            ContractorId = "5c232873-a758-4fc0-8cd5-bb55b500ac41",
+                            ContractorId = "1ae07ef3-0a12-43b4-98a2-313b4b43801f",
                             ProductId = "4"
                         });
                 });
@@ -391,15 +434,15 @@ namespace FoodForRequest.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "04c25340-74dd-424f-b919-d3cbf2e1c130",
+                            Id = "c596566e-0c34-4065-a8f6-3284a80979d1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c9a73b03-b0d3-4115-8101-a48d809d2408",
-                            EmailConfirmed = false,
+                            ConcurrencyStamp = "96fb9efa-935f-47e2-a0a0-c4f90d49a871",
+                            EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedUserName = "KISBELA@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEF36ssg/EUGyjDaDrgZjqUDbdXGSpWHxzghiithAS5BO0HcjzJ/yi3UIQjvqm4Z3HQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGOyA6FccOgMY/sRE2/lROx5fb37jKUg+Evkwk88XXAm4Knt3ll4MBzuQpKMBFZ9vA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "9cd46cf9-334b-4ef4-bbf4-90be5d16abe3",
+                            SecurityStamp = "946b77a8-d044-47d2-ae99-62000981d041",
                             TwoFactorEnabled = false,
                             UserName = "kisbela@gmail.com",
                             FirstName = "Béla",
@@ -407,15 +450,15 @@ namespace FoodForRequest.Migrations
                         },
                         new
                         {
-                            Id = "b1010805-86b0-4496-8860-83587efd90ac",
+                            Id = "6b522d5a-5622-4f00-9ba0-371834a33b73",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8361a4cc-62ae-40f3-b6b4-b06c2d71f253",
-                            EmailConfirmed = false,
+                            ConcurrencyStamp = "2951da1f-e7e7-4e1b-8d85-994a57ad0e27",
+                            EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedUserName = "JOZSEFJOZSIKA@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEI6nTj6IsMQ5CWWvzYyUelfrdRgIjrv2HQLUR1aeSDbX/7Vm/Tzju7p1F+QKzqagGg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHrrMH1F2FhXyXFcYChaSGOqtYOWNZG3KAR6lfYk9k3DOCbAWhRnXH1kEn3VxxHNrw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c125ac6b-0129-4587-80be-d412439783fb",
+                            SecurityStamp = "beafe1c2-38dc-4d3d-96ec-63df96f4feb7",
                             TwoFactorEnabled = false,
                             UserName = "jozsefjozsika@gmail.com",
                             FirstName = "József",
@@ -423,20 +466,39 @@ namespace FoodForRequest.Migrations
                         },
                         new
                         {
-                            Id = "5c232873-a758-4fc0-8cd5-bb55b500ac41",
+                            Id = "1ae07ef3-0a12-43b4-98a2-313b4b43801f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a6a368cd-d2aa-4ca5-82ad-c573105596ce",
-                            EmailConfirmed = false,
+                            ConcurrencyStamp = "35c16322-cf90-4d9a-85ae-d0029684b3c2",
+                            EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedUserName = "FERKOBERKO@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBooc4FLEwB4U4v4xN2mR5OvtZiiOIYwsjfN/c10aqcwjYLRqRk4jxYUtbWMIvS5BA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEG67eb+k+2WA1tr8tLUWYJ/sadCGsQcDMm4WtEoQ2E11Li8h1Iksfd7hVS4+r786MQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "9e4b63ce-aefb-446c-9231-5aff16b6b8bf",
+                            SecurityStamp = "7811dae7-7eb5-4fdd-a80f-01c2c4574044",
                             TwoFactorEnabled = false,
                             UserName = "ferkoberko@gmail.com",
                             FirstName = "Ferenc",
                             LastName = "Kovács"
                         });
+                });
+
+            modelBuilder.Entity("FoodForRequest.Models.Comment", b =>
+                {
+                    b.HasOne("FoodForRequest.Models.FoodUser", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("ContractorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FoodForRequest.Models.FoodRequest", "Product")
+                        .WithMany("Comments")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FoodForRequest.Models.FoodRequest", b =>
@@ -522,11 +584,15 @@ namespace FoodForRequest.Migrations
 
             modelBuilder.Entity("FoodForRequest.Models.FoodRequest", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("Offers");
                 });
 
             modelBuilder.Entity("FoodForRequest.Models.FoodUser", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("FoodRequests");
 
                     b.Navigation("Offers");

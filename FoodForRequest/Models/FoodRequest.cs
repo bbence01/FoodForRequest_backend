@@ -40,15 +40,12 @@ namespace FoodForRequest.Models
         public virtual FoodUser Requestor { get; set; }
 
 
-
-
-
-
-
         [NotMapped]
         public virtual List<Offer> Offers { get; set; }
 
-       
+        [NotMapped]
+        public virtual List<Comment> Comments { get; set; }
+
 
         public FoodRequest()
         {

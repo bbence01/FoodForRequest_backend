@@ -13,41 +13,59 @@ using System.Security.Cryptography;
 
 namespace FoodForRequest.Controllers
 {
-
     [ApiController]
     [Route("api/[controller]")]
     public class FoodrequestController : Controller
     {
-        private readonly IFoodRequestRepository repository;
+        private readonly IFoodRequestRepository foodRepository;
+        private readonly IOfferRepository offerRepository;
+        private readonly ICommentRepository commentRepository;
 
         private readonly UserManager<FoodUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
 
-        public FoodrequestController(IFoodRequestRepository repository, UserManager<FoodUser> userManager, RoleManager<IdentityRole> roleManager)
+        public FoodrequestController(IFoodRequestRepository repository, IOfferRepository offerRepository, ICommentRepository commentrep, UserManager<FoodUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            this.repository = repository;
+            this.foodRepository = repository;
             this.userManager = userManager;
             this.roleManager = roleManager;
+            this.commentRepository = commentrep;
+            this.offerRepository = offerRepository;
         }
-        
-      
-  
+
+
+
         [AllowAnonymous]
         [HttpGet("GetAll")]
-        public IEnumerable<FoodRequest> GetAllProduct()
+        public IEnumerable<RequestorViewModel> GetAllProduct()
         {
-            return repository.GetAll();
+            var requestors = foodRepository.GetAll();
+
+            var rInfos = new List<RequestorViewModel>();
+            foreach (var r in requestors)
+            {
+                rInfos.Add(new RequestorViewModel
+                {
+                    Id = r.Id,
+                    Name = r.Name,
+                    Description = r.Description,
+                    RequestorId = r.RequestorId
+
+                });
+            }
+
+            return rInfos;
         }
 
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public FoodRequest? GetTopic(string id)
+        public FoodRequest? GetFood(string id)
         {
-            return repository.GetOne(id);
+            return foodRepository.GetOne(id);
         }
 
         [AllowAnonymous]
-        [HttpPost("Create")]
+        [HttpPost("CreateFood")]
         public IActionResult Create([FromBody] FoodRequest food, IFormFile picture)
         {
             if (ModelState.IsValid)
@@ -66,7 +84,7 @@ namespace FoodForRequest.Controllers
                     f.PictureContentType = picture.ContentType;
                 }
 
-                this.repository.Create(f);
+                this.foodRepository.Create(f);
                 return Ok();
             }
             return Ok(food);
@@ -76,7 +94,7 @@ namespace FoodForRequest.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Edit(string id)
         {
-            var food = this.repository.GetOne(id);
+            var food = this.foodRepository.GetOne(id);
             if (food != null && (food.Requestor.Id == userManager.GetUserId(User) || User.IsInRole("Admin")))
             {
                 return Ok(food);
@@ -89,7 +107,7 @@ namespace FoodForRequest.Controllers
         {
             if (ModelState.IsValid)
             {
-                var old = this.repository.GetOne(id);
+                var old = this.foodRepository.GetOne(id);
 
                 if (old.Requestor.Id != userManager.GetUserId(User) && !User.IsInRole("Admin"))
                     return RedirectToAction(nameof(Index));
@@ -98,7 +116,7 @@ namespace FoodForRequest.Controllers
                 old.Description = food.Description;
                 old.IsDone = food.IsDone;
 
-                this.repository.Update(old);
+                this.foodRepository.Update(old);
                 return Ok(food);
             }
 
@@ -108,11 +126,11 @@ namespace FoodForRequest.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            var food = this.repository.GetOne(id);
+            var food = this.foodRepository.GetOne(id);
 
             if (food != null && (food.Requestor.Id == userManager.GetUserId(User) || User.IsInRole("Admin")))
             {
-                this.repository.Delete(food);
+                this.foodRepository.Delete(food);
             }
 
             return Ok();
@@ -124,13 +142,13 @@ namespace FoodForRequest.Controllers
         [HttpGet("Sell")]
         public IActionResult Sell(string foodid)
         {
-            var food = this.repository.GetOne(foodid);
+            var food = this.foodRepository.GetOne(foodid);
 
             if (food == null || food.Requestor.Id != userManager.GetUserId(User))
                 return Ok();
 
             food.IsDone = true;
-            this.repository.Update(food);
+            this.foodRepository.Update(food);
 
             return Ok();
         }
@@ -138,7 +156,7 @@ namespace FoodForRequest.Controllers
         [HttpGet("Image")]
         public IActionResult GetImage(string id)
         {
-            FoodRequest p = this.repository.GetOne(id);
+            FoodRequest p = this.foodRepository.GetOne(id);
             if (p == null)
             {
                 return NotFound();
@@ -151,11 +169,14 @@ namespace FoodForRequest.Controllers
         [HttpGet("purchused")]
         public IActionResult GetPurchasedItems()
         {
-            var food = this.repository.GetPurchasedItems(userManager.GetUserId(FoodUser));
+            var food = this.foodRepository.GetPurchasedItems(userManager.GetUserId(FoodUser));
 
             return Ok(food);
         }*/
+
+
         
+
     }
 }
 

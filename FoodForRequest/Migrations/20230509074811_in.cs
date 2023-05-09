@@ -179,6 +179,32 @@ namespace FoodForRequest.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProductId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ContractorId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_AspNetUsers_ContractorId",
+                        column: x => x.ContractorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Comments_Foodrequests_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Foodrequests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Offers",
                 columns: table => new
                 {
@@ -218,9 +244,9 @@ namespace FoodForRequest.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "04c25340-74dd-424f-b919-d3cbf2e1c130", 0, "c9a73b03-b0d3-4115-8101-a48d809d2408", "FoodUser", null, false, "Béla", "Kiss", false, null, null, "KISBELA@GMAIL.COM", "AQAAAAEAACcQAAAAEF36ssg/EUGyjDaDrgZjqUDbdXGSpWHxzghiithAS5BO0HcjzJ/yi3UIQjvqm4Z3HQ==", null, false, "9cd46cf9-334b-4ef4-bbf4-90be5d16abe3", false, "kisbela@gmail.com" },
-                    { "5c232873-a758-4fc0-8cd5-bb55b500ac41", 0, "a6a368cd-d2aa-4ca5-82ad-c573105596ce", "FoodUser", null, false, "Ferenc", "Kovács", false, null, null, "FERKOBERKO@GMAIL.COM", "AQAAAAEAACcQAAAAEBooc4FLEwB4U4v4xN2mR5OvtZiiOIYwsjfN/c10aqcwjYLRqRk4jxYUtbWMIvS5BA==", null, false, "9e4b63ce-aefb-446c-9231-5aff16b6b8bf", false, "ferkoberko@gmail.com" },
-                    { "b1010805-86b0-4496-8860-83587efd90ac", 0, "8361a4cc-62ae-40f3-b6b4-b06c2d71f253", "FoodUser", null, false, "József", "Kelemen", false, null, null, "JOZSEFJOZSIKA@GMAIL.COM", "AQAAAAEAACcQAAAAEI6nTj6IsMQ5CWWvzYyUelfrdRgIjrv2HQLUR1aeSDbX/7Vm/Tzju7p1F+QKzqagGg==", null, false, "c125ac6b-0129-4587-80be-d412439783fb", false, "jozsefjozsika@gmail.com" }
+                    { "1ae07ef3-0a12-43b4-98a2-313b4b43801f", 0, "35c16322-cf90-4d9a-85ae-d0029684b3c2", "FoodUser", null, true, "Ferenc", "Kovács", false, null, null, "FERKOBERKO@GMAIL.COM", "AQAAAAEAACcQAAAAEG67eb+k+2WA1tr8tLUWYJ/sadCGsQcDMm4WtEoQ2E11Li8h1Iksfd7hVS4+r786MQ==", null, false, "7811dae7-7eb5-4fdd-a80f-01c2c4574044", false, "ferkoberko@gmail.com" },
+                    { "6b522d5a-5622-4f00-9ba0-371834a33b73", 0, "2951da1f-e7e7-4e1b-8d85-994a57ad0e27", "FoodUser", null, true, "József", "Kelemen", false, null, null, "JOZSEFJOZSIKA@GMAIL.COM", "AQAAAAEAACcQAAAAEHrrMH1F2FhXyXFcYChaSGOqtYOWNZG3KAR6lfYk9k3DOCbAWhRnXH1kEn3VxxHNrw==", null, false, "beafe1c2-38dc-4d3d-96ec-63df96f4feb7", false, "jozsefjozsika@gmail.com" },
+                    { "c596566e-0c34-4065-a8f6-3284a80979d1", 0, "96fb9efa-935f-47e2-a0a0-c4f90d49a871", "FoodUser", null, true, "Béla", "Kiss", false, null, null, "KISBELA@GMAIL.COM", "AQAAAAEAACcQAAAAEGOyA6FccOgMY/sRE2/lROx5fb37jKUg+Evkwk88XXAm4Knt3ll4MBzuQpKMBFZ9vA==", null, false, "946b77a8-d044-47d2-ae99-62000981d041", false, "kisbela@gmail.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -228,27 +254,31 @@ namespace FoodForRequest.Migrations
                 columns: new[] { "Id", "Description", "IsDone", "Name", "PictureContentType", "RequestorId" },
                 values: new object[,]
                 {
-                    { "0b903017-4cc1-4d97-87cf-ce90ce91eba6", "New mountain bike for sale, I accept trade for PlayStation 5.", false, "Brand new bike", "Image/jpeg", "04c25340-74dd-424f-b919-d3cbf2e1c130" },
-                    { "3", "Brand new toaster for sale, don't worry it's not on fire anymore. I threw it into the bathtub. Will trade for coffin.", false, "Toaster", "Image/jpeg", "b1010805-86b0-4496-8860-83587efd90ac" },
-                    { "4", "I'm replacing my old laptop, works perfectly, comes with cracked windows.", false, "Laptop", "Image/png", "b1010805-86b0-4496-8860-83587efd90ac" },
-                    { "5", "Mirror for sale. Dog NOT included, STOP ASKING!", false, "Vintage Mirror", "Image/jpeg", "b1010805-86b0-4496-8860-83587efd90ac" },
-                    { "539e0f73-4441-40df-9245-4ceac92446b4", "My old Samsung Galaxy S6 in good condition, barely touched", false, "My old phone", "Image/jpeg", "04c25340-74dd-424f-b919-d3cbf2e1c130" }
+                    { "0d4fa37b-ad82-437f-9fad-e275fa3ac850", "Sülthus", false, "Stake", "Image/jpeg", "c596566e-0c34-4065-a8f6-3284a80979d1" },
+                    { "3", "Tosted.", false, "Toast", "Image/jpeg", "6b522d5a-5622-4f00-9ba0-371834a33b73" },
+                    { "4", "All the chocklate", false, "Chocklate ckae", "Image/png", "6b522d5a-5622-4f00-9ba0-371834a33b73" },
+                    { "5", "I want to see myself eating", false, "Mirror ckae", "Image/jpeg", "6b522d5a-5622-4f00-9ba0-371834a33b73" },
+                    { "ac50a43b-71ac-4ac0-878b-8d69a2f2c0c7", "Nyers hal", false, "Susi", "Image/jpeg", "c596566e-0c34-4065-a8f6-3284a80979d1" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Comments",
+                columns: new[] { "Id", "ContractorId", "ProductId", "Text" },
+                values: new object[,]
+                {
+                    { "becce080-6fe2-4e30-bd9e-adf11d899376", "1ae07ef3-0a12-43b4-98a2-313b4b43801f", "4", "Hello" },
+                    { "cbe49fcb-7565-45e1-b90b-b0366b491e67", "1ae07ef3-0a12-43b4-98a2-313b4b43801f", "3", "Hi" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Offers",
                 columns: new[] { "Id", "Choosen", "ContractorId", "ProductId" },
-                values: new object[] { "0aa928ec-c378-49ce-9b8b-4938a9faca09", false, "5c232873-a758-4fc0-8cd5-bb55b500ac41", "4" });
-
-            migrationBuilder.InsertData(
-                table: "Offers",
-                columns: new[] { "Id", "Choosen", "ContractorId", "ProductId" },
-                values: new object[] { "1216b567-09e9-4c68-a3b6-14dec86ff5fe", false, "04c25340-74dd-424f-b919-d3cbf2e1c130", "3" });
-
-            migrationBuilder.InsertData(
-                table: "Offers",
-                columns: new[] { "Id", "Choosen", "ContractorId", "ProductId" },
-                values: new object[] { "b1478c26-6ef7-4894-b6a8-cf08747f0638", false, "5c232873-a758-4fc0-8cd5-bb55b500ac41", "3" });
+                values: new object[,]
+                {
+                    { "31db8461-aa89-44cf-9278-1a5d9aa0df56", false, "c596566e-0c34-4065-a8f6-3284a80979d1", "3" },
+                    { "6cc3b63d-a154-442c-9984-bd3721e250c5", false, "1ae07ef3-0a12-43b4-98a2-313b4b43801f", "3" },
+                    { "e2993cd0-9d5c-43a0-bf82-b8356ba94b1a", false, "1ae07ef3-0a12-43b4-98a2-313b4b43801f", "4" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -290,6 +320,16 @@ namespace FoodForRequest.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Comments_ContractorId",
+                table: "Comments",
+                column: "ContractorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_ProductId",
+                table: "Comments",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Foodrequests_RequestorId",
                 table: "Foodrequests",
                 column: "RequestorId");
@@ -321,6 +361,9 @@ namespace FoodForRequest.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Comments");
 
             migrationBuilder.DropTable(
                 name: "Offers");
