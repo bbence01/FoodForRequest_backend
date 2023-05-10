@@ -40,6 +40,7 @@ builder.Services.AddTransient<IFoodRequestRepository, FoodrequestRepository>();
 builder.Services.AddTransient<IOfferRepository, OfferRepository>();
 builder.Services.AddTransient<ICommentRepository, CommentRepository>();
 builder.Services.AddTransient<IFoodUserRepository, FoodUserRepository>();
+builder.Services.AddTransient<IingridientRepository, IngridientRepository>();
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(
@@ -103,7 +104,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseHttpsRedirection();
+app.UseStaticFiles();
 
+app.UseRouting();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

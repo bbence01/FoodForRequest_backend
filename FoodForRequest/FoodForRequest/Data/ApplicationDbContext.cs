@@ -14,6 +14,9 @@ namespace FoodForRequest.Data
         public DbSet<Offer> Offers { get; set; }
 
         public DbSet<Comment> Comments { get; set; }
+
+        public DbSet<Ingredient> Ingredients { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -28,9 +31,9 @@ namespace FoodForRequest.Data
                 .OnDelete(DeleteBehavior.NoAction);
 
 
-            builder.Entity<Offer>().HasOne(p => p.Product)
+            builder.Entity<Offer>().HasOne(p => p.Request)
                     .WithMany(u => u.Offers)
-                    .HasForeignKey(p => p.ProductId)
+                    .HasForeignKey(p => p.FoodId)
                     .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Offer>().HasOne(p => p.User)
@@ -38,15 +41,21 @@ namespace FoodForRequest.Data
                     .HasForeignKey(p => p.ContractorId)
                     .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<Comment>().HasOne(p => p.Product)
+            builder.Entity<Comment>().HasOne(p => p.Request)
                   .WithMany(u => u.Comments)
-                  .HasForeignKey(p => p.ProductId)
+                  .HasForeignKey(p => p.RequestId)
                   .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Comment>().HasOne(p => p.User)
                    .WithMany(u => u.Comments)
                    .HasForeignKey(p => p.ContractorId)
                    .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Ingredient>().HasOne(p => p.Requests)
+                  .WithMany(u => u.Ingridients)
+                  .HasForeignKey(p => p.FoodId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
 
 
             builder.Entity<IdentityRole>().HasData(
@@ -115,7 +124,9 @@ namespace FoodForRequest.Data
                 Description = "Nyers hal",
                 RequestorId = bela.Id,
                 Picture = this.LoadSeedPicture("Seed/oldphone.jpg"),
-                PictureContentType = "Image/jpeg"
+                PictureContentType = "Image/jpeg",
+                //Ingridients = new List<string> { "Hal","Rizs"}
+                
             };
 
             FoodRequest p2 = new FoodRequest()
@@ -126,7 +137,8 @@ namespace FoodForRequest.Data
                 Description = "Sülthus",
                 RequestorId = bela.Id,
                 Picture = this.LoadSeedPicture("Seed/oldbike.jpg"),
-                PictureContentType = "Image/jpeg"
+                PictureContentType = "Image/jpeg",
+               // Ingridients = new List<string> { "Marha", "Bors" }
             };
 
             FoodRequest p3 = new FoodRequest()
@@ -136,7 +148,8 @@ namespace FoodForRequest.Data
                 Description = "Tosted.",
                 RequestorId = jozsi.Id,
                 Picture = this.LoadSeedPicture("Seed/oldtoaster.jpg"),
-                PictureContentType = "Image/jpeg"
+                PictureContentType = "Image/jpeg",
+               // Ingridients = new List<string> { "Tojás", "Kenyér" }
             };
 
             FoodRequest p4 = new FoodRequest()
@@ -146,7 +159,8 @@ namespace FoodForRequest.Data
                 Description = "All the chocklate",
                 RequestorId = jozsi.Id,
                 Picture = this.LoadSeedPicture("Seed/oldlaptop.jpg"),
-                PictureContentType = "Image/png"
+                PictureContentType = "Image/png",
+               // Ingridients = new List<string> { "Chokolate", "vaj","List" }
             };
 
             FoodRequest p5 = new FoodRequest()
@@ -156,7 +170,8 @@ namespace FoodForRequest.Data
                 Description = "I want to see myself eating",
                 RequestorId = jozsi.Id,
                 Picture = this.LoadSeedPicture("Seed/mirrorforsale.jpg"),
-                PictureContentType = "Image/jpeg"
+                PictureContentType = "Image/jpeg",
+               // Ingridients = new List<string> { "vaj", "List" }
             };
 
             builder.Entity<FoodRequest>().HasData(p, p2, p3, p4, p5);
@@ -164,21 +179,21 @@ namespace FoodForRequest.Data
             Offer b1 = new Offer()
             {
                 
-                ProductId = p3.Id,
+                FoodId = p3.Id,
                 ContractorId = bela.Id
             };
 
             Offer b2 = new Offer()
             {
                 
-                ProductId = p3.Id,
+                FoodId = p3.Id,
                 ContractorId = ferko.Id
             };
 
             Offer b3 = new Offer()
             {
 
-                ProductId = p4.Id,
+                FoodId = p4.Id,
                 ContractorId = ferko.Id
             };
 
@@ -187,16 +202,41 @@ namespace FoodForRequest.Data
             Comment c1 = new Comment()
             {
                 Text="Hi",
-                ProductId = p3.Id,
+                RequestId = p3.Id,
                 ContractorId = ferko.Id
             };
 
             Comment c2 = new Comment()
             {
                 Text = "Hello",
-                ProductId = p4.Id,
+                RequestId = p4.Id,
                 ContractorId = ferko.Id
             };
+
+
+            Ingredient i1 = new Ingredient()
+            {
+                Name = "Hal",
+                FoodId = p.Id,
+                Description = "Tuna"
+            };
+
+            Ingredient i2 = new Ingredient()
+            {
+                Name = "Rizs",
+                FoodId = p.Id,
+                Description = "Rizs"
+            };
+
+
+            Ingredient i3 = new Ingredient()
+            {
+                Name = "Choko",
+                FoodId = p4.Id,
+                Description = "Dark"
+            };
+
+
 
 
             builder.Entity<Offer>().HasData(b1, b2, b3);
@@ -204,6 +244,8 @@ namespace FoodForRequest.Data
 
 
             builder.Entity<Comment>().HasData(c1, c2);
+
+            builder.Entity<Ingredient>().HasData(i1, i2, i3);
 
             base.OnModelCreating(builder);
         }

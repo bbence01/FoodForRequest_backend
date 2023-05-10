@@ -19,8 +19,7 @@ namespace FoodForRequest.Models
         [MinLength(5)]
         public string Description { get; set; }
 
-        [NotMapped]
-        public string[] ingridients { get; set; }
+    
 
         [DefaultValue(false)]
         public bool IsDone { get; set; }
@@ -35,10 +34,13 @@ namespace FoodForRequest.Models
 
 
 
-
         [NotMapped]
         public virtual FoodUser Requestor { get; set; }
 
+
+
+        [NotMapped]
+        public List<Ingredient> Ingridients { get; set; }
 
         [NotMapped]
         public virtual List<Offer> Offers { get; set; }

@@ -96,7 +96,7 @@ namespace FoodForRequest.Controllers
             if (product != null)
             {
                 BiddingViewModel vm = new BiddingViewModel();
-                vm.ProductId = productId;
+                vm.FoodId = productId;
                 vm.Value = (product.HighestBid != null ? product.HighestBid.Value : 0) + 1;
                 return View(vm);
             }
@@ -109,14 +109,14 @@ namespace FoodForRequest.Controllers
         [HttpPost]
         public IActionResult Create(BiddingViewModel newBid)
         {
-            FoodRequest p = this.productRepo.GetOne(newBid.ProductId);
+            FoodRequest p = this.productRepo.GetOne(newBid.FoodId);
             int maxBid = p.HighestBid != null ? p.HighestBid.Value : 0;
             if (ModelState.IsValid && maxBid < newBid.Value)
             {
                 Offer bid = new Offer()
                 {
                     Value = newBid.Value,
-                    ProductId = newBid.ProductId,
+                    FoodId = newBid.FoodId,
                     UserId = userManager.GetUserId(FoodUser)
                 };
 
