@@ -2,7 +2,7 @@
 
 namespace FoodForRequest.Data
 {
-    public class CommentRepository: ICommentRepository
+    public class CommentRepository : ICommentRepository
     {
         ApplicationDbContext context;
 
@@ -43,6 +43,12 @@ namespace FoodForRequest.Data
                 context.SaveChanges();
             }
         }
+
+        public List<Comment> GetCommentssForRequest(string id)
+        {
+            return context.Comments.Where(p => p.RequestId == id).ToList();
+        }
+
 
     }
 

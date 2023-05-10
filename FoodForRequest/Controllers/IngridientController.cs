@@ -2,6 +2,7 @@
 using FoodForRequest.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,15 +20,16 @@ namespace FoodForRequest.Controllers
 
         private readonly UserManager<FoodUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
+        ApplicationDbContext context;
 
-
-        public IngridientController(IFoodRequestRepository repository, IOfferRepository offerRepository, IingridientRepository ingrep, UserManager<FoodUser> userManager, RoleManager<IdentityRole> roleManager)
+        public IngridientController(ApplicationDbContext context,IFoodRequestRepository repository, IOfferRepository offerRepository, IingridientRepository ingrep, UserManager<FoodUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             this.foodRepository = repository;
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.ingridientRepository = ingrep;
             this.offerRepository = offerRepository;
+            this.context = context;
         }
 
 
@@ -35,7 +37,7 @@ namespace FoodForRequest.Controllers
         [HttpGet("GetAll")]
         public IEnumerable<IngredientViewModel> Get()
         {
-           
+
 
             var ingredient = ingridientRepository.GetAll();
 
@@ -47,7 +49,7 @@ namespace FoodForRequest.Controllers
                     Id = ing.Id,
                     Description = ing.Description,
                     Name = ing.Name,
-                    ProductId = ing.ProductId,
+                    FoodId = ing.FoodId,
 
                 });
             }
@@ -86,5 +88,33 @@ namespace FoodForRequest.Controllers
             ingridientRepository.Delete(id);
 
         }
+
+        [HttpPut("{requestId}/addIngredients")]
+        public async Task<IActionResult> AddIngredientsToRequest(string requestId, [FromBody] List<Ingredient> ingredients)
+        {
+            var request = await context.Foodrequests.FindAsync(requestId);
+
+            if (request == null)
+            {
+                return NotFound();
+            }
+
+            foreach (var ingredient in ingredients)
+            {
+                var dbIngredient = await context.Ingredients.FindAsync(ingredient.Id);
+                if (dbIngredient != null)
+                {
+                    request.Ingridients.Add(dbIngredient);
+                }
+            }
+
+            context.Entry(request).State = EntityState.Modified;
+
+            await context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+
     }
 }

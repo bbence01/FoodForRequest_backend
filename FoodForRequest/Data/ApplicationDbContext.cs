@@ -31,9 +31,9 @@ namespace FoodForRequest.Data
                 .OnDelete(DeleteBehavior.NoAction);
 
 
-            builder.Entity<Offer>().HasOne(p => p.Product)
+            builder.Entity<Offer>().HasOne(p => p.Request)
                     .WithMany(u => u.Offers)
-                    .HasForeignKey(p => p.ProductId)
+                    .HasForeignKey(p => p.FoodId)
                     .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Offer>().HasOne(p => p.User)
@@ -41,9 +41,9 @@ namespace FoodForRequest.Data
                     .HasForeignKey(p => p.ContractorId)
                     .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<Comment>().HasOne(p => p.Product)
+            builder.Entity<Comment>().HasOne(p => p.Request)
                   .WithMany(u => u.Comments)
-                  .HasForeignKey(p => p.ProductId)
+                  .HasForeignKey(p => p.RequestId)
                   .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Comment>().HasOne(p => p.User)
@@ -51,9 +51,9 @@ namespace FoodForRequest.Data
                    .HasForeignKey(p => p.ContractorId)
                    .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<Ingredient>().HasOne(p => p.Product)
+            builder.Entity<Ingredient>().HasOne(p => p.Requests)
                   .WithMany(u => u.Ingridients)
-                  .HasForeignKey(p => p.ProductId)
+                  .HasForeignKey(p => p.FoodId)
                   .OnDelete(DeleteBehavior.Cascade);
 
 
@@ -179,21 +179,21 @@ namespace FoodForRequest.Data
             Offer b1 = new Offer()
             {
                 
-                ProductId = p3.Id,
+                FoodId = p3.Id,
                 ContractorId = bela.Id
             };
 
             Offer b2 = new Offer()
             {
                 
-                ProductId = p3.Id,
+                FoodId = p3.Id,
                 ContractorId = ferko.Id
             };
 
             Offer b3 = new Offer()
             {
 
-                ProductId = p4.Id,
+                FoodId = p4.Id,
                 ContractorId = ferko.Id
             };
 
@@ -202,14 +202,14 @@ namespace FoodForRequest.Data
             Comment c1 = new Comment()
             {
                 Text="Hi",
-                ProductId = p3.Id,
+                RequestId = p3.Id,
                 ContractorId = ferko.Id
             };
 
             Comment c2 = new Comment()
             {
                 Text = "Hello",
-                ProductId = p4.Id,
+                RequestId = p4.Id,
                 ContractorId = ferko.Id
             };
 
@@ -217,14 +217,14 @@ namespace FoodForRequest.Data
             Ingredient i1 = new Ingredient()
             {
                 Name = "Hal",
-                ProductId = p.Id,
+                FoodId = p.Id,
                 Description = "Tuna"
             };
 
             Ingredient i2 = new Ingredient()
             {
                 Name = "Rizs",
-                ProductId = p.Id,
+                FoodId = p.Id,
                 Description = "Rizs"
             };
 
@@ -232,7 +232,7 @@ namespace FoodForRequest.Data
             Ingredient i3 = new Ingredient()
             {
                 Name = "Choko",
-                ProductId = p4.Id,
+                FoodId = p4.Id,
                 Description = "Dark"
             };
 

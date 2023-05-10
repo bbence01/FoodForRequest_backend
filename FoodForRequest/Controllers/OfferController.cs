@@ -53,10 +53,16 @@ namespace FoodForRequest.Controllers
 
         // POST api/<WordController>
         [HttpPost]
-        public async void AddWord([FromBody] Offer value)
+        public async void AddOffer( string requestorId,  string foodID)
         {
-
-            offerRepo.Create(value);
+            Offer offer = new Offer()
+            {
+                FoodId = foodID,
+                ContractorId = requestorId,
+                Choosen = false                
+                
+            };
+            offerRepo.Create(offer);
         }
 
 
@@ -81,7 +87,12 @@ namespace FoodForRequest.Controllers
 
         }
 
-
+        //GET api/<WordController>/5
+        [HttpGet("GetOffersForRequest/{id}")]
+        public IEnumerable<Offer> GetOffersForRequest(string id)
+        {
+            return offerRepo.GetOffersForRequest(id);
+        }
 
 
 
@@ -96,7 +107,7 @@ namespace FoodForRequest.Controllers
             if (product != null)
             {
                 BiddingViewModel vm = new BiddingViewModel();
-                vm.ProductId = productId;
+                vm.FoodId = productId;
                 vm.Value = (product.HighestBid != null ? product.HighestBid.Value : 0) + 1;
                 return View(vm);
             }
@@ -109,14 +120,14 @@ namespace FoodForRequest.Controllers
         [HttpPost]
         public IActionResult Create(BiddingViewModel newBid)
         {
-            FoodRequest p = this.productRepo.GetOne(newBid.ProductId);
+            FoodRequest p = this.productRepo.GetOne(newBid.FoodId);
             int maxBid = p.HighestBid != null ? p.HighestBid.Value : 0;
             if (ModelState.IsValid && maxBid < newBid.Value)
             {
                 Offer bid = new Offer()
                 {
                     Value = newBid.Value,
-                    ProductId = newBid.ProductId,
+                    FoodId = newBid.FoodId,
                     UserId = userManager.GetUserId(FoodUser)
                 };
 

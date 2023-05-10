@@ -9,5 +9,7 @@ namespace FoodForRequest.Data
         void Delete(string id);
         IEnumerable<Offer> GetAll();
         Offer GetOne(string id);
+
+        List<Offer> GetOffersForRequest(string id);
     }
 }

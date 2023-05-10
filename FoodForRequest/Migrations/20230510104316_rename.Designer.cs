@@ -4,6 +4,7 @@ using FoodForRequest.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodForRequest.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230510104316_rename")]
+    partial class rename
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,15 +53,15 @@ namespace FoodForRequest.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c8e4e52c-a582-467f-958a-0612429d7ffc",
-                            ContractorId = "c80c45df-eb32-416d-acf4-95175e87daa2",
+                            Id = "91b30b3d-b283-4551-9fe9-63d10816a269",
+                            ContractorId = "8b925fca-7c7f-463d-a591-1ed8babf8c98",
                             RequestId = "3",
                             Text = "Hi"
                         },
                         new
                         {
-                            Id = "c4a3cf4e-0621-4611-bf0a-f46b82411cae",
-                            ContractorId = "c80c45df-eb32-416d-acf4-95175e87daa2",
+                            Id = "3e2ccacd-12ce-4867-b9d4-b70e877ee540",
+                            ContractorId = "8b925fca-7c7f-463d-a591-1ed8babf8c98",
                             RequestId = "4",
                             Text = "Hello"
                         });
@@ -101,21 +103,21 @@ namespace FoodForRequest.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6d589dfb-82cd-4235-885b-d96ad4cd3b2f",
+                            Id = "10be2a69-ca05-432b-adf2-2002b768dd49",
                             Description = "Nyers hal",
                             IsDone = false,
                             Name = "Susi",
                             PictureContentType = "Image/jpeg",
-                            RequestorId = "1b33d921-a653-46b4-b554-2fcf44b074b8"
+                            RequestorId = "d6d3fe22-589c-4db6-b09b-ed2ac7ece8df"
                         },
                         new
                         {
-                            Id = "43c89048-798b-44d3-8bfd-bc8d4475757f",
+                            Id = "e3220fc5-8db1-404a-b057-1e0fb7ba8086",
                             Description = "Sülthus",
                             IsDone = false,
                             Name = "Stake",
                             PictureContentType = "Image/jpeg",
-                            RequestorId = "1b33d921-a653-46b4-b554-2fcf44b074b8"
+                            RequestorId = "d6d3fe22-589c-4db6-b09b-ed2ac7ece8df"
                         },
                         new
                         {
@@ -124,7 +126,7 @@ namespace FoodForRequest.Migrations
                             IsDone = false,
                             Name = "Toast",
                             PictureContentType = "Image/jpeg",
-                            RequestorId = "6ec16e3b-9a5e-49cd-a243-c2468de5f853"
+                            RequestorId = "71f6fd23-1412-41fc-a7a4-b5766c67fbdc"
                         },
                         new
                         {
@@ -133,7 +135,7 @@ namespace FoodForRequest.Migrations
                             IsDone = false,
                             Name = "Chocklate ckae",
                             PictureContentType = "Image/png",
-                            RequestorId = "6ec16e3b-9a5e-49cd-a243-c2468de5f853"
+                            RequestorId = "71f6fd23-1412-41fc-a7a4-b5766c67fbdc"
                         },
                         new
                         {
@@ -142,7 +144,7 @@ namespace FoodForRequest.Migrations
                             IsDone = false,
                             Name = "Mirror ckae",
                             PictureContentType = "Image/jpeg",
-                            RequestorId = "6ec16e3b-9a5e-49cd-a243-c2468de5f853"
+                            RequestorId = "71f6fd23-1412-41fc-a7a4-b5766c67fbdc"
                         });
                 });
 
@@ -173,21 +175,21 @@ namespace FoodForRequest.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c38dfa96-0938-405b-9fd6-26fa30b533f5",
+                            Id = "035bbd0d-20fd-46de-823d-57b35bfd167b",
                             Description = "Tuna",
-                            FoodId = "6d589dfb-82cd-4235-885b-d96ad4cd3b2f",
+                            FoodId = "10be2a69-ca05-432b-adf2-2002b768dd49",
                             Name = "Hal"
                         },
                         new
                         {
-                            Id = "d8e2bfa6-f27b-46f9-8fab-d94c7c3fa302",
+                            Id = "45b5cc18-33c1-414a-89be-857ce5918917",
                             Description = "Rizs",
-                            FoodId = "6d589dfb-82cd-4235-885b-d96ad4cd3b2f",
+                            FoodId = "10be2a69-ca05-432b-adf2-2002b768dd49",
                             Name = "Rizs"
                         },
                         new
                         {
-                            Id = "dfc9ad00-2a5c-48b5-9ec8-23f0decc21a7",
+                            Id = "4a487250-4db7-4b0d-a6c5-6816f031864b",
                             Description = "Dark",
                             FoodId = "4",
                             Name = "Choko"
@@ -222,23 +224,23 @@ namespace FoodForRequest.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "217755f8-f4ec-40f5-b4ae-21794c1d0226",
+                            Id = "ba70f1a9-e411-4829-b473-177eca63b707",
                             Choosen = false,
-                            ContractorId = "1b33d921-a653-46b4-b554-2fcf44b074b8",
+                            ContractorId = "d6d3fe22-589c-4db6-b09b-ed2ac7ece8df",
                             FoodId = "3"
                         },
                         new
                         {
-                            Id = "d1eca9b3-b27c-4ef8-b0d1-192217ec269d",
+                            Id = "72c9aaf6-70aa-479c-8622-d8f12eca3557",
                             Choosen = false,
-                            ContractorId = "c80c45df-eb32-416d-acf4-95175e87daa2",
+                            ContractorId = "8b925fca-7c7f-463d-a591-1ed8babf8c98",
                             FoodId = "3"
                         },
                         new
                         {
-                            Id = "5e39dd77-7695-43c3-aefd-f74176f52e22",
+                            Id = "da5c266c-9166-4af0-a00d-38f5298dd269",
                             Choosen = false,
-                            ContractorId = "c80c45df-eb32-416d-acf4-95175e87daa2",
+                            ContractorId = "8b925fca-7c7f-463d-a591-1ed8babf8c98",
                             FoodId = "4"
                         });
                 });
@@ -486,15 +488,15 @@ namespace FoodForRequest.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1b33d921-a653-46b4-b554-2fcf44b074b8",
+                            Id = "d6d3fe22-589c-4db6-b09b-ed2ac7ece8df",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "462d34c2-f059-49ef-92a0-69603d8f2eed",
+                            ConcurrencyStamp = "b278d6a6-83f0-452a-888b-3d4c82852719",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedUserName = "KISBELA@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEN3Y5PJxbDjJUl+zYggtrRmuT3LxwWZDfpkgrfCuEMv5sgJmrPvbk7oVkOmxIX+vJA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEP3I/Yx6n8tStsV2qhQsfk4ALcBUdhJw26C6iw7OK/+KhGygyhJX4p3pbL/GfZC/mA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4e0fa68f-a601-4e20-bd80-613ec5380d8a",
+                            SecurityStamp = "132fb752-f12c-4c13-9ddd-f48227ac102f",
                             TwoFactorEnabled = false,
                             UserName = "kisbela@gmail.com",
                             FirstName = "Béla",
@@ -503,15 +505,15 @@ namespace FoodForRequest.Migrations
                         },
                         new
                         {
-                            Id = "6ec16e3b-9a5e-49cd-a243-c2468de5f853",
+                            Id = "71f6fd23-1412-41fc-a7a4-b5766c67fbdc",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1318a0c5-4ca2-4bbc-ba02-9c54ba51ab96",
+                            ConcurrencyStamp = "cb5f47dd-7994-47d9-8f3f-69e515220da5",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedUserName = "JOZSEFJOZSIKA@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGlmZkJkgxGqFEvQoB7IqQms5UlDcQCf1ObSipdFI1/g2TbiHl3AknvBIYwAme0JZA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPYZ7JBdtzgpZf3sM16poclTwscfHeUvTHBQWmilHFnqAWbd2ZQlOYq/cAhZf68L2w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "facd9f9e-ef6c-4a42-b68d-12f2998d8f8a",
+                            SecurityStamp = "c70f493c-7b5a-4996-99d7-3acfd8cfb9f1",
                             TwoFactorEnabled = false,
                             UserName = "jozsefjozsika@gmail.com",
                             FirstName = "József",
@@ -520,15 +522,15 @@ namespace FoodForRequest.Migrations
                         },
                         new
                         {
-                            Id = "c80c45df-eb32-416d-acf4-95175e87daa2",
+                            Id = "8b925fca-7c7f-463d-a591-1ed8babf8c98",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "32475cfc-6d12-401c-a4f0-8ead39c895d6",
+                            ConcurrencyStamp = "e79960ea-612f-4914-aa54-d7904ded64df",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedUserName = "FERKOBERKO@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIWtLNtd3KMaG63JjPfKTdSV94DMqnuOdwbaJV2t9N2pCh+gdaOd8YJK+QgOlsOcpw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELYRhaD50AjWKK6Cuzx6/Qm29+hGhj6JmAza//Wg9Q9c+xpTNiMqHIJrCrkQeGVSXw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b7683179-f9df-4479-bac7-753ab8c0280e",
+                            SecurityStamp = "17da36b7-bce9-4f11-b1c8-80ba1eb76904",
                             TwoFactorEnabled = false,
                             UserName = "ferkoberko@gmail.com",
                             FirstName = "Ferenc",

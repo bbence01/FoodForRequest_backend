@@ -10,5 +10,6 @@ namespace FoodForRequest.Data
         void Delete(string id);
         IEnumerable<Comment> GetAll();
         Comment GetOne(string id);
+        List<Comment> GetCommentssForRequest(string id);
     }
 }

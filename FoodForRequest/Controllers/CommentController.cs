@@ -51,12 +51,17 @@ namespace FoodForRequest.Controllers
         }
 
         // POST api/<CommentController>
-        [HttpPost("CreateComment")]
-        public void Post([FromBody] Comment value)
+        [HttpPost]
+        public void Post( string text,  string requestorId,   string foodID)
         {
+            Comment comment = new Comment()
+            {
+                RequestId = foodID,
+                ContractorId = requestorId,
+                Text = text
 
-            commentRepository.Create(value);
-
+            };
+            commentRepository.Create(comment);
         }
         /*
         // PUT api/<CommentController>/5
@@ -74,5 +79,14 @@ namespace FoodForRequest.Controllers
             commentRepository.Delete(id);
 
         }
+
+
+        //GET api/<WordController>/5
+        [HttpGet("GetCommentsForRequest/{id}")]
+        public IEnumerable<Comment> GetCommentsForRequest(string id)
+        {
+            return commentRepository.GetCommentssForRequest(id);
+        }
+
     }
 }

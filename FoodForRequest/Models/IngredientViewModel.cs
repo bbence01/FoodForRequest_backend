@@ -11,7 +11,7 @@
 
         public string Description { get; set; }
 
-        public string ProductId { get; set; }
+        public string FoodId { get; set; }
 
     }
 }

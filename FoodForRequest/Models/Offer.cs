@@ -17,7 +17,7 @@ namespace FoodForRequest.Models
 
 
         [ForeignKey(nameof(Models.FoodRequest))]
-        public string ProductId { get; set; }
+        public string FoodId { get; set; }
 
         [ForeignKey(nameof(Models.FoodUser))]
         public string ContractorId { get; set; }
@@ -28,9 +28,10 @@ namespace FoodForRequest.Models
 
 
 
+        [NotMapped]
+        public virtual FoodRequest Request { get; set; }
 
-        public virtual FoodRequest Product { get; set; }
-
+        [NotMapped]
         public virtual FoodUser User { get; set; }
 
         public Offer()

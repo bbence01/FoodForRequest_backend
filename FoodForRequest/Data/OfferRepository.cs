@@ -1,4 +1,5 @@
 ﻿using FoodForRequest.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace FoodForRequest.Data
 {
@@ -34,7 +35,7 @@ namespace FoodForRequest.Data
         }
 
         public void Delete(string id)
-  
+
         {
             var word = context.Offers.Find(id);
             if (word != null)
@@ -43,5 +44,10 @@ namespace FoodForRequest.Data
                 context.SaveChanges();
             }
         }
+        public List<Offer> GetOffersForRequest(string id)
+        {
+            return context.Offers.Where(p => p.FoodId == id).ToList();
+        }
+
     }
 }

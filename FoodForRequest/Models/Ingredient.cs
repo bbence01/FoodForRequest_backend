@@ -19,12 +19,12 @@ namespace FoodForRequest.Models
 
 
         [ForeignKey(nameof(Models.FoodRequest))]
-        public string ProductId { get; set; }
+        public string FoodId { get; set; }
 
 
 
         [NotMapped]
-        public virtual FoodRequest Product { get; set; }
+        public virtual FoodRequest Requests { get; set; }
 
 
         public Ingredient()
