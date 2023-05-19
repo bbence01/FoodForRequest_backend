@@ -12,9 +12,11 @@ namespace FoodForRequest.Data
             this.context = context;
         }
 
-        public void Create(Offer bid)
+        public void Create(Offer offer)
         {
-            context.Offers.Add(bid);
+
+
+            context.Offers.Add(offer);
             context.SaveChanges();
         }
 
@@ -47,6 +49,15 @@ namespace FoodForRequest.Data
         public List<Offer> GetOffersForRequest(string id)
         {
             return context.Offers.Where(p => p.FoodId == id).ToList();
+        }
+
+
+        public void Update(Offer offer)
+        {
+            Offer old = this.GetOne(offer.Id);
+            old.Choosen = offer.Choosen;
+
+            this.context.SaveChanges();
         }
 
     }

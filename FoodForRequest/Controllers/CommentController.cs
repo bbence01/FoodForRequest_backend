@@ -52,13 +52,13 @@ namespace FoodForRequest.Controllers
 
         // POST api/<CommentController>
         [HttpPost]
-        public void Post( string text,  string requestorId,   string foodID)
+        public void Post( [FromBody] Comment c)
         {
             Comment comment = new Comment()
             {
-                RequestId = foodID,
-                ContractorId = requestorId,
-                Text = text
+                RequestId = c.RequestId,
+                ContractorId = c.ContractorId,
+                Text = c.Text
 
             };
             commentRepository.Create(comment);

@@ -76,125 +76,133 @@ namespace FoodForRequest.Data
             seed.PasswordHash = ph.HashPassword(seed, "almafa123");
             var hasher = new PasswordHasher<FoodUser>();
 
-            var bela = new FoodUser()
+            var bence = new FoodUser()
             {
                 Id = Guid.NewGuid().ToString(),
                 EmailConfirmed = true,
-                UserName = "kisbela@gmail.com",
-                NormalizedUserName = "KISBELA@GMAIL.COM",
-                FoodUserName = "kisbela@gmail.com",
-                FirstName = "Béla",
-                LastName = "Kiss",
+                UserName = "bence@gmail.com",
+                NormalizedUserName = "BENCE@GMAIL.COM",
+                FoodUserName = "bence@gmail.com",
+                FirstName = "Bence",
+                LastName = "Bognár",
                 PasswordHash = hasher.HashPassword(null, "Pa$$w0rd")
             };
 
-            var jozsi = new FoodUser()
+            var anita = new FoodUser()
             {
                 Id = Guid.NewGuid().ToString(),
-                UserName = "jozsefjozsika@gmail.com",
+                UserName = "anita@gmail.com",
                 EmailConfirmed = true,
-                NormalizedUserName = "JOZSEFJOZSIKA@GMAIL.COM",
-                FoodUserName = "jozsefjozsika@gmail.com",
-                FirstName = "József",
-                LastName = "Kelemen",
+                NormalizedUserName = "ANITA@GMAIL.COM",
+                FoodUserName = "anita@gmail.com",
+                FirstName = "Anita",
+                LastName = "Koczó",
                 PasswordHash = hasher.HashPassword(null, "password")
             };
 
-            var ferko = new FoodUser()
+            var tibi = new FoodUser()
             {
 
                 Id = Guid.NewGuid().ToString(),
-                UserName = "ferkoberko@gmail.com",
+                UserName = "tibi@gmail.com",
                 EmailConfirmed = true,
-                NormalizedUserName = "FERKOBERKO@GMAIL.COM",
-                FoodUserName = "ferkoberko@gmail.com",
+                NormalizedUserName = "TIBI@GMAIL.COM",
+                FoodUserName = "tibi@gmail.com",
 
-                FirstName = "Ferenc",
-                LastName = "Kovács",
+                FirstName = "Tibor",
+                LastName = "Bognár",
                 PasswordHash = hasher.HashPassword(null, "password")
             };
 
             //Seeding the FoodUser to AspNetUsers table
-            builder.Entity<FoodUser>().HasData(bela, jozsi, ferko);
+            builder.Entity<FoodUser>().HasData(bence, anita, tibi);
 
-            FoodRequest p = new FoodRequest()
+            FoodRequest f = new FoodRequest()
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = "Susi",
                 Description = "Nyers hal",
-                RequestorId = bela.Id,
-                Picture = this.LoadSeedPicture("Seed/oldphone.jpg"),
+                RequestorId = bence.Id,
+                Picture = this.LoadSeedPicture("Seed/susi.jpg"),
                 PictureContentType = "Image/jpeg",
-                //Ingridients = new List<string> { "Hal","Rizs"}
-                
+                Deliveryoptions = "Uber",
+                Payment = 2000
+
             };
 
-            FoodRequest p2 = new FoodRequest()
+            FoodRequest f2 = new FoodRequest()
             {
                 Id = Guid.NewGuid().ToString(),
 
                 Name = "Stake",
                 Description = "Sülthus",
-                RequestorId = bela.Id,
-                Picture = this.LoadSeedPicture("Seed/oldbike.jpg"),
+                RequestorId = bence.Id,
+                Picture = this.LoadSeedPicture("Seed/steak.jpg"),
                 PictureContentType = "Image/jpeg",
-               // Ingridients = new List<string> { "Marha", "Bors" }
+                Deliveryoptions = "Uber",
+                Payment = 3000
             };
 
-            FoodRequest p3 = new FoodRequest()
-            {Id = "3",
+            FoodRequest f3 = new FoodRequest()
+            {
+                Id = "3",
 
                 Name = "Toast",
                 Description = "Tosted.",
-                RequestorId = jozsi.Id,
-                Picture = this.LoadSeedPicture("Seed/oldtoaster.jpg"),
+                RequestorId = anita.Id,
+                Picture = this.LoadSeedPicture("Seed/toast.jpg"),
                 PictureContentType = "Image/jpeg",
-               // Ingridients = new List<string> { "Tojás", "Kenyér" }
+                Deliveryoptions = "No",
+                Payment = 2000
             };
 
-            FoodRequest p4 = new FoodRequest()
-            {Id = "4",
+            FoodRequest f4 = new FoodRequest()
+            {
+                Id = "4",
 
                 Name = "Chocklate ckae",
                 Description = "All the chocklate",
-                RequestorId = jozsi.Id,
-                Picture = this.LoadSeedPicture("Seed/oldlaptop.jpg"),
+                RequestorId = anita.Id,
+                Picture = this.LoadSeedPicture("Seed/chokocake.jpg"),
                 PictureContentType = "Image/png",
-               // Ingridients = new List<string> { "Chokolate", "vaj","List" }
+                Deliveryoptions = "No",
+                Payment = 3500
             };
 
-            FoodRequest p5 = new FoodRequest()
-            {Id = "5",
+            FoodRequest f5 = new FoodRequest()
+            {
+                Id = "5",
 
                 Name = "Mirror ckae",
                 Description = "I want to see myself eating",
-                RequestorId = jozsi.Id,
-                Picture = this.LoadSeedPicture("Seed/mirrorforsale.jpg"),
+                RequestorId = anita.Id,
+                Picture = this.LoadSeedPicture("Seed/mirrorcake.jpg"),
                 PictureContentType = "Image/jpeg",
-               // Ingridients = new List<string> { "vaj", "List" }
+                Deliveryoptions = "Uber",
+                Payment = 2002
             };
 
-            builder.Entity<FoodRequest>().HasData(p, p2, p3, p4, p5);
+            builder.Entity<FoodRequest>().HasData(f, f2, f3, f4, f5);
 
-            Offer b1 = new Offer()
+            Offer o1 = new Offer()
             {
                 
-                FoodId = p3.Id,
-                ContractorId = bela.Id
+                FoodId = f3.Id,
+                ContractorId = bence.Id
             };
 
-            Offer b2 = new Offer()
+            Offer o2 = new Offer()
             {
                 
-                FoodId = p3.Id,
-                ContractorId = ferko.Id
+                FoodId = f3.Id,
+                ContractorId = tibi.Id
             };
 
-            Offer b3 = new Offer()
+            Offer o3 = new Offer()
             {
 
-                FoodId = p4.Id,
-                ContractorId = ferko.Id
+                FoodId = f4.Id,
+                ContractorId = tibi.Id
             };
 
 
@@ -202,29 +210,29 @@ namespace FoodForRequest.Data
             Comment c1 = new Comment()
             {
                 Text="Hi",
-                RequestId = p3.Id,
-                ContractorId = ferko.Id
+                RequestId = f3.Id,
+                ContractorId = tibi.Id
             };
 
             Comment c2 = new Comment()
             {
                 Text = "Hello",
-                RequestId = p4.Id,
-                ContractorId = ferko.Id
+                RequestId = f4.Id,
+                ContractorId = tibi.Id
             };
 
 
             Ingredient i1 = new Ingredient()
             {
                 Name = "Hal",
-                FoodId = p.Id,
+                FoodId = f.Id,
                 Description = "Tuna"
             };
 
             Ingredient i2 = new Ingredient()
             {
                 Name = "Rizs",
-                FoodId = p.Id,
+                FoodId = f.Id,
                 Description = "Rizs"
             };
 
@@ -232,14 +240,14 @@ namespace FoodForRequest.Data
             Ingredient i3 = new Ingredient()
             {
                 Name = "Choko",
-                FoodId = p4.Id,
+                FoodId = f4.Id,
                 Description = "Dark"
             };
 
 
 
 
-            builder.Entity<Offer>().HasData(b1, b2, b3);
+            builder.Entity<Offer>().HasData(o1, o2, o3);
 
 
 

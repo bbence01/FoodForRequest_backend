@@ -22,7 +22,7 @@ namespace FoodForRequest.Controllers
         private readonly RoleManager<IdentityRole> roleManager;
         ApplicationDbContext context;
 
-        public IngridientController(ApplicationDbContext context,IFoodRequestRepository repository, IOfferRepository offerRepository, IingridientRepository ingrep, UserManager<FoodUser> userManager, RoleManager<IdentityRole> roleManager)
+        public IngridientController(ApplicationDbContext context, IFoodRequestRepository repository, IOfferRepository offerRepository, IingridientRepository ingrep, UserManager<FoodUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             this.foodRepository = repository;
             this.userManager = userManager;
@@ -115,6 +115,11 @@ namespace FoodForRequest.Controllers
             return NoContent();
         }
 
+        [HttpGet("GetIngredientsForRequest/{id}")]
+        public IEnumerable<Ingredient> GetOffersForRequest(string id)
+        {
+            return ingridientRepository.GetIngredientsForRequest(id);
+        }
 
     }
 }

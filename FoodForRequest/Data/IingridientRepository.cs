@@ -10,5 +10,6 @@ namespace FoodForRequest.Data
         void Delete(string id);
         IEnumerable<Ingredient> GetAll();
         Ingredient GetOne(string id);
+        List<Ingredient> GetIngredientsForRequest(string id);
     }
 }

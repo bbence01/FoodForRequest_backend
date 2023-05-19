@@ -11,5 +11,6 @@ namespace FoodForRequest.Data
         Offer GetOne(string id);
 
         List<Offer> GetOffersForRequest(string id);
+        void Update(Offer offer);
     }
 }

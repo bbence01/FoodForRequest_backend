@@ -2,7 +2,7 @@
 
 namespace FoodForRequest.Data
 {
-    public class IngridientRepository: IingridientRepository
+    public class IngridientRepository : IingridientRepository
     {
         ApplicationDbContext context;
 
@@ -42,6 +42,11 @@ namespace FoodForRequest.Data
                 context.Ingredients.Remove(word);
                 context.SaveChanges();
             }
+        }
+
+        public List<Ingredient> GetIngredientsForRequest(string id)
+        {
+            return context.Ingredients.Where(p => p.FoodId == id).ToList();
         }
 
     }

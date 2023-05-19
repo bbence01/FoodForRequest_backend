@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace FoodForRequest.Models
 {
@@ -22,8 +24,10 @@ namespace FoodForRequest.Models
         public string FoodId { get; set; }
 
 
-
         [NotMapped]
+        [JsonIgnore]
+        [ValidateNever]
+      
         public virtual FoodRequest Requests { get; set; }
 
 

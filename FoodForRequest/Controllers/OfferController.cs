@@ -19,14 +19,14 @@ namespace FoodForRequest.Controllers
     [Route("api/[controller]")]
     public class OfferController : Controller
     {
-        IFoodRequestRepository foodRepo;
+        IFoodRequestRepository requestRepo;
         IOfferRepository offerRepo;
         private readonly UserManager<FoodUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
 
         public OfferController(IFoodRequestRepository foodRepo, IOfferRepository offerRepo, UserManager<FoodUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            this.foodRepo = foodRepo;
+            this.requestRepo = foodRepo;
             this.offerRepo = offerRepo;
             this.userManager = userManager;
             this.roleManager = roleManager;
@@ -36,7 +36,7 @@ namespace FoodForRequest.Controllers
 
          //GET: api/<WordController>
         [HttpGet("all")]
-        public async Task<IEnumerable<Offer>> GetAllWord()
+        public IEnumerable<Offer> GetAllWord()
         {
             return  offerRepo.GetAll();
           }
@@ -53,12 +53,12 @@ namespace FoodForRequest.Controllers
 
         // POST api/<WordController>
         [HttpPost]
-        public async void AddOffer( string requestorId,  string foodID)
+        public async void AddOffer([FromBody] Offer value)
         {
             Offer offer = new Offer()
             {
-                FoodId = foodID,
-                ContractorId = requestorId,
+                FoodId = value.FoodId,
+                ContractorId = value.ContractorId,
                 Choosen = false                
                 
             };
@@ -97,45 +97,47 @@ namespace FoodForRequest.Controllers
 
 
 
-
-        /*
-        [HttpPost]
-        public IActionResult Create(string productId)
+        [Authorize]
+        [HttpGet]
+        public IActionResult GetOne(string requestId)
         {
-            var product = this.foodRepo.GetOne(productId);
+            var foodrequest = this.requestRepo.GetOne(requestId);
 
-            if (product != null)
+            if (foodrequest != null)
             {
-                BiddingViewModel vm = new BiddingViewModel();
-                vm.FoodId = productId;
-                vm.Value = (product.HighestBid != null ? product.HighestBid.Value : 0) + 1;
-                return View(vm);
+                OfferViewModel vm = new OfferViewModel();
+                vm.FoodId = requestId;
+                vm.Choosen = false;
+
+                return Ok();
             }
             else
             {
                 return Ok();
             }
         }
-        
+
+        [Authorize]
         [HttpPost]
-        public IActionResult Create(BiddingViewModel newBid)
+        public IActionResult Create(OfferViewModel newOffer)
         {
-            FoodRequest p = this.productRepo.GetOne(newBid.FoodId);
-            int maxBid = p.HighestBid != null ? p.HighestBid.Value : 0;
-            if (ModelState.IsValid && maxBid < newBid.Value)
+            FoodRequest f = this.requestRepo.GetOne(newOffer.FoodId);
+
+            if (ModelState.IsValid)
             {
-                Offer bid = new Offer()
+                Offer offer = new Offer()
                 {
-                    Value = newBid.Value,
-                    FoodId = newBid.FoodId,
-                    UserId = userManager.GetUserId(FoodUser)
+
+                    FoodId = newOffer.FoodId,
+                    ContractorId = userManager.GetUserId(User)
                 };
 
-                this.bidRepo.Create(bid);
+                this.offerRepo.Create(offer);
 
                 return Ok();
             }
-            else { return Ok(newBid); }
-        }*/
+            else { return Ok(); }
+        }
+
     }
 }
