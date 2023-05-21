@@ -40,14 +40,14 @@ namespace FoodForRequest.Controllers
 
         [AllowAnonymous]
         [HttpGet("GetAll")]
-        public IEnumerable<RequestorViewModel> GetAllProduct()
+        public IEnumerable<RequestViewModel> GetAllProduct()
         {
             var requestors = foodrepository.GetAll();
 
-            var rInfos = new List<RequestorViewModel>();
+            var rInfos = new List<RequestViewModel>();
             foreach (var r in requestors)
             {
-                rInfos.Add(new RequestorViewModel
+                rInfos.Add(new RequestViewModel
                 {
                     Id = r.Id,
                     Name = r.Name,
@@ -188,7 +188,7 @@ namespace FoodForRequest.Controllers
         {
             var foodrequest = this.foodrepository.SeeAcceptedOffers(userManager.GetUserId(User));
 
-            return View(foodrequest);
+            return Ok(foodrequest);
         }
 
 
@@ -197,7 +197,7 @@ namespace FoodForRequest.Controllers
         {
             var foodrequest = this.foodrepository.SeeAcceptedOffers(id);
 
-            return View(foodrequest);
+            return Ok(foodrequest);
         }
 
 

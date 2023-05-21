@@ -36,14 +36,14 @@ namespace FoodForRequest.Controllers
 
          //GET: api/<WordController>
         [HttpGet("all")]
-        public IEnumerable<Offer> GetAllWord()
+        public IEnumerable<Offer> GetAllOffer()
         {
             return  offerRepo.GetAll();
           }
 
          //GET api/<WordController>/5
         [HttpGet("{id}")]
-        public Offer? GetWord(string id)
+        public Offer? GetOffer(string id)
         {
             return offerRepo.GetOne(id);
         }
@@ -79,15 +79,18 @@ namespace FoodForRequest.Controllers
         }*/
 
         // DELETE api/<WordController>/5
+
+        /*
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteWord(string id)
+        public async Task<IActionResult> DeleteOffer(string id)
         {
             offerRepo.Delete(id);
             return Ok();
 
-        }
+        }*/
 
         //GET api/<WordController>/5
+        /*
         [HttpGet("GetOffersForRequest/{id}")]
         public IEnumerable<Offer> GetOffersForRequest(string id)
         {
@@ -138,6 +141,6 @@ namespace FoodForRequest.Controllers
             }
             else { return Ok(); }
         }
-
+        */
     }
 }
