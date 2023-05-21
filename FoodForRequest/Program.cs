@@ -44,12 +44,14 @@ builder.Services.AddTransient<IingridientRepository, IngridientRepository>();
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(
-        policy =>
-        {
-            policy.WithHeaders("*");
-            policy.WithOrigins("*");
-            policy.WithMethods("*");
-        });
+          policy =>
+          {
+              policy.WithExposedHeaders("*");
+              policy.WithHeaders("*");
+              policy.WithOrigins("http://localhost:4200"); // Replace "*" with "http://localhost:4200"
+              policy.WithMethods("*");
+              policy.AllowCredentials(); // This allows cookies, headers, etc.
+          });
 });
 
 builder.Services.AddDefaultIdentity<FoodUser>(options => {
@@ -96,7 +98,14 @@ builder.Services.AddControllers()
 
 
 var app = builder.Build();
-app.UseCors();
+app.UseCors(x=>x
+.AllowCredentials()
+.AllowAnyMethod()
+.AllowAnyHeader()
+.WithOrigins("http://localhost:4200")
+
+
+);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -122,6 +122,7 @@ namespace WordQuiz.Controllers
         //}
 
         // PUT api/<PlayerController>/5
+        [Authorize]
 
         [HttpPut("{id}")]
         public async Task<IActionResult> EditPlayer(int id, [FromBody] FoodUser value)
@@ -129,6 +130,9 @@ namespace WordQuiz.Controllers
             fooduserRepository.UpdateFooduser(value);
             return Ok();
         }
+
+
+        [Authorize]
 
         // DELETE api/<PlayerController>/5
         [HttpDelete("{id}")]

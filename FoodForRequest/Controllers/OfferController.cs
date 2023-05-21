@@ -56,8 +56,9 @@ namespace FoodForRequest.Controllers
             return offerRepo.GetOne(id);
         }
 
-        
-      
+
+
+        [Authorize]
 
         // POST api/<WordController>
         [HttpPost]

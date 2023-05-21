@@ -52,9 +52,13 @@ namespace FoodForRequest.Controllers
                     Id = r.Id,
                     Name = r.Name,
                     Description = r.Description,
+                    Payment = r.Payment,
+                    IsDone = r.IsDone,
+                    InProgress = r.InProgress,
+                    Deliveryoptions = r.Deliveryoptions,
                     RequestorId = r.RequestorId,
+                    PictureURL = r.PictureURL
 
-                 
 
                 });
             }
@@ -64,9 +68,30 @@ namespace FoodForRequest.Controllers
 
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public FoodRequest? GetFood(string id)
+        public RequestViewModel? GetFood(string id)
         {
-            return foodrepository.GetOne(id);
+
+            var rInfos = new RequestViewModel();
+            var r = foodrepository.GetOne(id);
+
+            rInfos = (new RequestViewModel
+            {
+                Id = r.Id,
+                Name = r.Name,
+                Description = r.Description,
+                Payment = r.Payment,
+                IsDone = r.IsDone,
+                InProgress = r.InProgress,
+                Deliveryoptions = r.Deliveryoptions,
+                RequestorId = r.RequestorId,
+                PictureURL = r.PictureURL
+
+
+            });
+
+
+
+            return rInfos;
         }
 
         [AllowAnonymous]
@@ -81,6 +106,7 @@ namespace FoodForRequest.Controllers
                     Description = food.Description,
                     RequestorId = userManager.GetUserId(User),
                     PictureURL = food.PictureURL
+
                 };
                /* using (var stream = picture.OpenReadStream())
                 {
