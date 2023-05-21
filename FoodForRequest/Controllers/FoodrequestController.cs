@@ -159,7 +159,9 @@ namespace FoodForRequest.Controllers
         }*/
 
         [Authorize]
-        public IActionResult ChooseOffer(string foodId, string offerId)
+        [HttpPut("ChooseOffer")]
+
+        public async Task<IActionResult> ChooseOffer(string foodId, string offerId)
         {
             var food = this.foodrepository.GetOne(foodId);
             var offer = this.offerrepository.GetOne(offerId);
@@ -184,7 +186,8 @@ namespace FoodForRequest.Controllers
         }
 
         [Authorize]
-        public IActionResult SeeAcceptedOffers()
+        [HttpGet("SeeAcceptedOffers")]
+        public async Task<IActionResult> SeeAcceptedOffers()
         {
             var foodrequest = this.foodrepository.SeeAcceptedOffers(userManager.GetUserId(User));
 
@@ -193,7 +196,9 @@ namespace FoodForRequest.Controllers
 
 
         [Authorize]
-        public IActionResult SeeOtherAcceptedOffers(string id)
+        [HttpGet("SeeOtherAcceptedOffers/{id}")]
+
+        public async Task<IActionResult> SeeOtherAcceptedOffers(string id)
         {
             var foodrequest = this.foodrepository.SeeAcceptedOffers(id);
 
@@ -202,7 +207,9 @@ namespace FoodForRequest.Controllers
 
 
         [Authorize]
-        public IActionResult CompleteRequest(string foodId)
+        [HttpPut("CompleteRequest/{id}")]
+
+        public async Task<IActionResult> CompleteRequest(string foodId)
         {
             var food = this.foodrepository.GetOne(foodId);
             var chosenOffer = food.Offers.FirstOrDefault(o => o.Choosen);
@@ -225,7 +232,9 @@ namespace FoodForRequest.Controllers
 
 
         [Authorize]
-        public IActionResult CancelRequest(string foodId)
+        [HttpPut("CancelRequest/{id}")]
+
+        public async Task<IActionResult> CancelRequest(string foodId)
         {
             var food = this.foodrepository.GetOne(foodId);
             var chosenOffer = food.Offers.Where(x => x.Choosen == true).First();

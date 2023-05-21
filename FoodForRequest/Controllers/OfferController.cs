@@ -41,7 +41,15 @@ namespace FoodForRequest.Controllers
             return  offerRepo.GetAll();
           }
 
-         //GET api/<WordController>/5
+
+
+        [HttpGet("GetOffersForRequest/{id}")]
+        public IEnumerable<Offer> GetOffersForRequest( string id)
+        {
+            return offerRepo.GetOffersForRequest(id);
+        }
+
+        //GET api/<WordController>/5
         [HttpGet("{id}")]
         public Offer? GetOffer(string id)
         {
