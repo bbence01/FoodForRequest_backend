@@ -17,6 +17,7 @@ namespace FoodForRequest.Models
 
         public string LastName { get; set; }
 
+        public int Founds { get; set; }
 
 
         [NotMapped]

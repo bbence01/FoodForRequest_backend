@@ -25,19 +25,21 @@ namespace FoodForRequest.Models
         [Range(1, int.MaxValue)]
         public int Payment { get; set; }
 
+
+
         [DefaultValue(false)]
         public bool IsDone { get; set; }
 
         [DefaultValue(false)]
         public bool InProgress { get; set; }
-
+        [DefaultValue("No")]
         public string Deliveryoptions { get; set; }
-
+        /*
         [Required]
         public byte[] Picture { get; set; }
         [Required]
         public string PictureContentType { get; set; }
-
+        */
         [ForeignKey(nameof(FoodUser))]
         public string RequestorId { get; set; }
 
@@ -46,6 +48,9 @@ namespace FoodForRequest.Models
 
         [NotMapped]
         public virtual FoodUser Requestor { get; set; }
+
+
+        public string PictureURL { get; set; }
 
 
         [NotMapped]
