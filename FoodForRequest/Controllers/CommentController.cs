@@ -76,7 +76,7 @@ namespace FoodForRequest.Controllers
         // DELETE api/<CommentController>/5
         [Authorize]
 
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("{id}")]
         public void Delete(string id)
         {
 

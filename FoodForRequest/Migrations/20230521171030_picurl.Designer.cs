@@ -96,7 +96,7 @@ namespace FoodForRequest.Migrations
                     b.Property<int>("Payment")
                         .HasColumnType("int");
 
-                    b.Property<string>("PictureURL")
+                    b.Property<string>("ImageURL")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

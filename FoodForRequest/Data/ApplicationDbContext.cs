@@ -88,6 +88,7 @@ namespace FoodForRequest.Data
                 LastName = "Bognár",
                 Founds = 10000,
                 PasswordHash = hasher.HashPassword(null, "Pa$$w0rd")
+                
             };
 
             var anita = new FoodUser()

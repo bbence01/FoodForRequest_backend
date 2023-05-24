@@ -75,7 +75,13 @@ namespace FoodForRequest.Controllers
         }
 
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteOffer(string id)
+        {
+            offerRepo.Delete(id);
+            return Ok();
 
+        }
 
         /*
         // PUT api/<WordController>/5
@@ -90,13 +96,7 @@ namespace FoodForRequest.Controllers
         // DELETE api/<WordController>/5
 
         /*
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOffer(string id)
-        {
-            offerRepo.Delete(id);
-            return Ok();
-
-        }*/
+       */
 
         //GET api/<WordController>/5
         /*

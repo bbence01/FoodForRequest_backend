@@ -160,7 +160,7 @@ namespace FoodForRequest.Controllers
         {
             var food = this.foodrepository.GetOne(id);
 
-            if (food != null && (food.Requestor.Id == userManager.GetUserId(User) || User.IsInRole("Admin")))
+            if (food != null && (food.RequestorId == userManager.GetUserId(User) || User.IsInRole("Admin")))
             {
                 this.foodrepository.Delete(food);
             }
