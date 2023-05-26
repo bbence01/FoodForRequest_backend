@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FoodForRequest.Models
 {
-    public class RequestViewModel
+    public class FoodRequestViewModel
     {
         public string Id { get; set; }
 

@@ -21,7 +21,7 @@ namespace FoodForRequest.Models
 
 
         [ForeignKey(nameof(Models.FoodRequest))]
-        public string FoodId { get; set; }
+        public string? FoodId { get; set; }
 
 
         [NotMapped]

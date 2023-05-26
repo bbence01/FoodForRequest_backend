@@ -4,7 +4,7 @@ namespace FoodForRequest.Data
 {
     public interface IFoodRequestRepository
     {
-        void Create(FoodRequest foodrequest);
+        FoodRequest Create(FoodRequest foodrequest);
         void Delete(FoodRequest foodrequest);
         IEnumerable<FoodRequest> GetAll();
         FoodRequest GetOne(string id);
@@ -12,5 +12,9 @@ namespace FoodForRequest.Data
 
 
         IEnumerable<FoodRequest> SeeAcceptedOffers(string userId);
+
+        FoodRequest GetOneName(string id);
+        FoodRequest GetOneDescription(string id);
+
     }
 }

@@ -63,13 +63,28 @@ namespace FoodForRequest.Controllers
         {
             return ingridientRepository.GetOne(id);
         }
-
+        /*
         // POST api/<IngridientController>
-        [HttpPost("CreateComment")]
+        [HttpPost("CreateIngredient")]
         public void Post([FromBody] Ingredient value)
         {
 
             ingridientRepository.Create(value);
+
+
+        }*/
+
+        [HttpPost("CreateIngredient")]
+        public void Post([FromBody] IngredientCreateViewModel value)
+        {
+
+            Ingredient i = new Ingredient();
+
+            i.Name = value.Name;
+            i.Description = value.Description;
+
+            ingridientRepository.Create(i);
+
 
         }
         /*

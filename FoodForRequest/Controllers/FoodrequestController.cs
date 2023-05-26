@@ -10,6 +10,7 @@ using FoodForRequest.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Cryptography;
+using FoodForRequest.Migrations;
 
 namespace FoodForRequest.Controllers
 {
@@ -21,12 +22,13 @@ namespace FoodForRequest.Controllers
         private readonly IOfferRepository offerrepository;
         private readonly ICommentRepository commentRepository;
         private readonly IFoodUserRepository foodUserRepository;
+        private readonly IingridientRepository ingredientRepository;
 
 
         private readonly UserManager<FoodUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
 
-        public FoodrequestController(IFoodUserRepository foodUserRepository, IFoodRequestRepository repository, IOfferRepository offerRepository, ICommentRepository commentrep, UserManager<FoodUser> userManager, RoleManager<IdentityRole> roleManager)
+        public FoodrequestController(IingridientRepository ingredientRepository,IFoodUserRepository foodUserRepository, IFoodRequestRepository repository, IOfferRepository offerRepository, ICommentRepository commentrep, UserManager<FoodUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             this.foodrepository = repository;
             this.userManager = userManager;
@@ -34,20 +36,21 @@ namespace FoodForRequest.Controllers
             this.commentRepository = commentrep;
             this.offerrepository = offerRepository;
             this.foodUserRepository = foodUserRepository;
+            this.ingredientRepository = ingredientRepository;
         }
 
 
 
         [AllowAnonymous]
         [HttpGet("GetAll")]
-        public IEnumerable<RequestViewModel> GetAllProduct()
+        public IEnumerable<FoodRequestViewModel> GetAllProduct()
         {
             var requestors = foodrepository.GetAll();
 
-            var rInfos = new List<RequestViewModel>();
+            var rInfos = new List<FoodRequestViewModel>();
             foreach (var r in requestors)
             {
-                rInfos.Add(new RequestViewModel
+                rInfos.Add(new FoodRequestViewModel
                 {
                     Id = r.Id,
                     Name = r.Name,
@@ -68,13 +71,13 @@ namespace FoodForRequest.Controllers
 
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public RequestViewModel? GetFood(string id)
+        public FoodRequestViewModel? GetFood(string id)
         {
 
-            var rInfos = new RequestViewModel();
+            var rInfos = new FoodRequestViewModel();
             var r = foodrepository.GetOne(id);
 
-            rInfos = (new RequestViewModel
+            rInfos = (new FoodRequestViewModel
             {
                 Id = r.Id,
                 Name = r.Name,
@@ -96,32 +99,162 @@ namespace FoodForRequest.Controllers
 
         [AllowAnonymous]
         [HttpPost("CreateFd")]
-        public IActionResult Create([FromBody] FoodRequest food /*IFormFile picture*/)
+        public IActionResult Create([FromBody] FoodrequestCreateViewmodel food /*IFormFile picture*/)
         {
             if (ModelState.IsValid)
             {
                 FoodRequest f = new FoodRequest()
                 {
+                    
                     Name = food.Name,
                     Description = food.Description,
+                    Payment = food.Payment,
+                    Deliveryoptions = food.Deliveryoptions,
                     RequestorId = userManager.GetUserId(User),
                     PictureURL = food.PictureURL
 
-                };
-               /* using (var stream = picture.OpenReadStream())
-                {
-                    byte[] buffer = new byte[picture.Length];
-                    stream.Read(buffer, 0, (int)picture.Length);
-                    f.Picture = buffer;
-                    f.PictureContentType = picture.ContentType;
-                }*/
 
-                this.foodrepository.Create(f);
+                };
+                /* using (var stream = picture.OpenReadStream())
+                 {
+                     byte[] buffer = new byte[picture.Length];
+                     stream.Read(buffer, 0, (int)picture.Length);
+                     f.Picture = buffer;
+                     f.PictureContentType = picture.ContentType;
+                 }*/
+
+                FoodRequest newr = this.foodrepository.Create(f);
+
+
+
+                foreach (var item in food.Ingredients)
+                {
+                    Ingredient i = ingredientRepository.GetOne(item);
+
+                   
+                        Ingredient newi = new Ingredient();
+                        newi.Name = i.Name;
+                    newi.Description = i.Name;
+
+                    var foodlist = foodrepository.GetAll();
+
+                    foreach (var fooditem in foodlist)
+                    {
+                        if (foodrepository.GetOneName(f.Name).Description == f.Description && foodrepository.GetOneName(f.Name).RequestorId == f.RequestorId)
+                        {
+                            newi.FoodId = newr.Id;
+                        }
+                        
+
+                    }
+
+
+
+
+                    ingredientRepository.Create(newi);
+                  
+
+
+                }
+
+
                 return Ok();
             }
             return Ok(food);
         }
 
+
+        [AllowAnonymous]
+        [HttpPut("{id}")]
+        public IActionResult Update(string id, [FromBody] FoodrequestCreateViewmodel food)
+        {
+
+
+            if (ModelState.IsValid)
+            {
+
+                FoodRequest f = foodrepository.GetOne(id); // Retrieve existing food request
+
+               
+
+
+                    if (f == null)
+                {
+                    return NotFound(); // No food request with this id
+                }
+
+                if (userManager.GetUserId(User) == f.RequestorId)
+
+                {
+
+                    // Update properties
+                    f.Name = food.Name;
+                    f.Description = food.Description;
+                    f.Payment = food.Payment;
+                    f.Deliveryoptions = food.Deliveryoptions;
+                    f.RequestorId = userManager.GetUserId(User);
+                    f.PictureURL = food.PictureURL;
+
+                    // Update the ingredients
+                    // This is a simple way and might not work in all scenarios
+                    // You would need to check for added/removed ingredients
+
+                    var ingredients = ingredientRepository.GetAll();
+
+                    foreach (var item in ingredients)
+                    {
+                        if (item.FoodId == f.Id )
+                        {
+                            item.FoodId = null;
+                        }
+                    }
+
+                    foreach (var item in food.Ingredients)
+                    {
+                        Ingredient i = ingredientRepository.GetOne(item);
+
+
+                        Ingredient newi = new Ingredient();
+                        newi.Name = i.Name;
+                        newi.Description = i.Name;
+
+                        var foodlist = foodrepository.GetAll();
+
+                        newi.FoodId = id;
+
+
+
+
+
+                        ingredientRepository.Create(newi);
+
+
+
+                    }
+
+                    // Save updated request back to the repository
+                    foodrepository.Update(f);
+
+                    return Ok();
+
+
+
+                }
+
+
+             
+            }
+
+            return BadRequest(ModelState); // Model was not valid
+
+
+
+
+
+        }
+
+
+        /*
         [AllowAnonymous]
         [HttpPut("{id}")]
         public async Task<IActionResult> Edit(string id)
@@ -153,7 +286,7 @@ namespace FoodForRequest.Controllers
             }
 
             return Ok(food);
-        }
+        }*/
         [AllowAnonymous]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)

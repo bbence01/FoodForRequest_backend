@@ -11,10 +11,11 @@ namespace FoodForRequest.Data
             this.context = context;
         }
 
-        public void Create(FoodRequest product)
+        public FoodRequest Create(FoodRequest product)
         {
             context.Foodrequests.Add(product);
             context.SaveChanges();
+            return product;
         }
 
         public IEnumerable<FoodRequest> GetAll()
@@ -26,6 +27,16 @@ namespace FoodForRequest.Data
         {
             return context.Foodrequests.FirstOrDefault(p => p.Id == id);
         }
+
+        public FoodRequest GetOneName(string id)
+        {
+            return context.Foodrequests.FirstOrDefault(p => p.Name == id);
+        }
+        public FoodRequest GetOneDescription(string id)
+        {
+            return context.Foodrequests.FirstOrDefault(p => p.Description == id);
+        }
+
 
         public void Update(FoodRequest product)
         {

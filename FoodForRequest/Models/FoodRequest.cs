@@ -21,6 +21,7 @@ namespace FoodForRequest.Models
         [MinLength(5)]
         public string Description { get; set; }
 
+        [Required]
 
         [Range(1, int.MaxValue)]
         public int Payment { get; set; }
@@ -32,6 +33,9 @@ namespace FoodForRequest.Models
 
         [DefaultValue(false)]
         public bool InProgress { get; set; }
+
+        [Required]
+
         [DefaultValue("No")]
         public string Deliveryoptions { get; set; }
         /*
