@@ -317,6 +317,65 @@ namespace FoodForRequest.Controllers
             return new FileContentResult(p.Picture, p.PictureContentType);
         }*/
 
+     
+
+        [Authorize]
+        [HttpGet("SeeAcceptedOffers")]
+        public  IEnumerable<FoodRequestViewModel> SeeAcceptedOffers()
+        {
+            var foodrequest = this.foodrepository.SeeAcceptedOffers(userManager.GetUserId(User));
+
+            var rInfos = new List<FoodRequestViewModel>();
+            foreach (var r in foodrequest)
+            {
+                rInfos.Add(new FoodRequestViewModel
+                {
+                    Id = r.Id,
+                    Name = r.Name,
+                    Description = r.Description,
+                    Payment = r.Payment,
+                    IsDone = r.IsDone,
+                    InProgress = r.InProgress,
+                    Deliveryoptions = r.Deliveryoptions,
+                    RequestorId = r.RequestorId,
+                    PictureURL = r.PictureURL
+
+
+                });
+            }
+
+            return rInfos;
+        }
+
+
+        [Authorize]
+        [HttpGet("SeeOtherAcceptedOffers/{id}")]
+
+        public IEnumerable<FoodRequestViewModel> SeeOtherAcceptedOffers(string id)
+        {
+            var foodrequest = this.foodrepository.SeeAcceptedOffers(id);
+
+            var rInfos = new List<FoodRequestViewModel>();
+            foreach (var r in foodrequest)
+            {
+                rInfos.Add(new FoodRequestViewModel
+                {
+                    Id = r.Id,
+                    Name = r.Name,
+                    Description = r.Description,
+                    Payment = r.Payment,
+                    IsDone = r.IsDone,
+                    InProgress = r.InProgress,
+                    Deliveryoptions = r.Deliveryoptions,
+                    RequestorId = r.RequestorId,
+                    PictureURL = r.PictureURL
+
+
+                });
+            }
+
+            return rInfos;
+        }
         [Authorize]
         [HttpPut("ChooseOffer")]
 
@@ -329,7 +388,14 @@ namespace FoodForRequest.Controllers
 
 
             if (food == null || food.Requestor.Id != userManager.GetUserId(User))
-                return RedirectToAction(nameof(Index));
+                return BadRequest(new { message = "Invalid food or unauthorized access" });
+
+            if (food.InProgress || food.IsDone)
+                return BadRequest(new { message = "Food request is already in progress or done" });
+
+            if (offer == null || offer.Choosen)
+                return BadRequest(new { message = "Invalid offer or offer is already chosen" });
+
 
             food.InProgress = true;
             offer.Choosen = true;
@@ -345,60 +411,64 @@ namespace FoodForRequest.Controllers
         }
 
         [Authorize]
-        [HttpGet("SeeAcceptedOffers")]
-        public async Task<IActionResult> SeeAcceptedOffers()
+        [HttpPut("CompleteRequest")]
+
+        public async Task<IActionResult> CompleteRequest(string id)
         {
-            var foodrequest = this.foodrepository.SeeAcceptedOffers(userManager.GetUserId(User));
-
-            return Ok(foodrequest);
-        }
-
-
-        [Authorize]
-        [HttpGet("SeeOtherAcceptedOffers/{id}")]
-
-        public async Task<IActionResult> SeeOtherAcceptedOffers(string id)
-        {
-            var foodrequest = this.foodrepository.SeeAcceptedOffers(id);
-
-            return Ok(foodrequest);
-        }
-
-
-        [Authorize]
-        [HttpPut("CompleteRequest/{id}")]
-
-        public async Task<IActionResult> CompleteRequest(string foodId)
-        {
-            var food = this.foodrepository.GetOne(foodId);
-            var chosenOffer = food.Offers.FirstOrDefault(o => o.Choosen);
+            var food = this.foodrepository.GetOne(id);
+            var chosenOffer = offerrepository.GetAll().Where(x => x.FoodId == id && x.Choosen).FirstOrDefault();
             var requestor = this.foodUserRepository.GetFooduserById(food.RequestorId);
             var contractor = this.foodUserRepository.GetFooduserById(userManager.GetUserId(User));
 
-            if (food == null || chosenOffer.ContractorId != userManager.GetUserId(User))
-                return RedirectToAction(nameof(Index));
+
+            if (food == null || !food.InProgress || food.IsDone)
+                return BadRequest(new { message = "Invalid food request or food request is not in progress or already done" });
+
+            if (chosenOffer == null || !chosenOffer.Choosen)
+                return BadRequest(new { message = "Invalid offer or offer is not chosen" });
 
 
-            contractor.Founds = contractor.Founds + food.Payment;
+            if (chosenOffer != null)
+            {
+                if (food == null || chosenOffer.ContractorId != userManager.GetUserId(User))
+                    return Ok();
 
-            requestor.Founds = requestor.Founds - food.Payment;
 
-            food.IsDone = true;
-            this.foodrepository.Update(food);
+                contractor.Founds = contractor.Founds + food.Payment;
+
+                requestor.Founds = requestor.Founds - food.Payment;
+
+                food.IsDone = true;
+                this.foodrepository.Update(food);
+                this.foodUserRepository.UpdateFooduser(contractor);
+                this.foodUserRepository.UpdateFooduser(requestor);
+
+
+            }
 
             return Ok();
         }
 
 
         [Authorize]
-        [HttpPut("CancelRequest/{id}")]
+        [HttpPut("CancelRequest")]
 
-        public async Task<IActionResult> CancelRequest(string foodId)
+        public async Task<IActionResult> CancelRequest(string id)
         {
-            var food = this.foodrepository.GetOne(foodId);
-            var chosenOffer = food.Offers.Where(x => x.Choosen == true).First();
+            var food = this.foodrepository.GetOne(id);
+            
+            var chosenOffer = offerrepository.GetAll().Where(x => x.FoodId == id && x.Choosen).FirstOrDefault();
 
-            if (food == null || (food.RequestorId != userManager.GetUserId(User) && chosenOffer.ContractorId != userManager.GetUserId(User)))
+            if (food == null || !food.InProgress || food.IsDone)
+                return BadRequest(new { message = "Invalid food request or food request is not in progress or already done" });
+
+            if (chosenOffer == null || !chosenOffer.Choosen)
+                return BadRequest(new { message = "Invalid offer or offer is not chosen" });
+
+
+            if (chosenOffer != null)
+            {
+                if (food == null || (food.RequestorId != userManager.GetUserId(User) && chosenOffer.ContractorId != userManager.GetUserId(User)))
                 return Ok();
 
             food.IsDone = false;
@@ -406,8 +476,7 @@ namespace FoodForRequest.Controllers
             food.Contractor = null;
 
 
-            if (chosenOffer != null)
-            {
+           
                 chosenOffer.Choosen = false;
                 this.offerrepository.Update(chosenOffer);
             }
@@ -416,6 +485,39 @@ namespace FoodForRequest.Controllers
 
             return Ok();
         }
+
+        [Authorize]
+        [HttpPut("Resubmit")]
+
+        public async Task<IActionResult> Resubmit(string id)
+        {
+            var food = this.foodrepository.GetOne(id);
+
+            if (food == null )
+                return BadRequest(new { message = "Invalid food request" });
+
+            food.IsDone = false;
+            food.InProgress = false;
+            food.Contractor = null;
+            food.Offers = null;
+            var chosenOffer = offerrepository.GetAll().Where(x => x.FoodId == id);
+            if (chosenOffer != null)
+            {
+                foreach (var item in chosenOffer)
+                {
+
+                    offerrepository.Delete(item);
+
+
+                }
+            }
+
+            this.foodrepository.Update(food);
+
+            return Ok();
+        }
+
+
 
     }
 }

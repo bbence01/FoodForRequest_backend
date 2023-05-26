@@ -50,22 +50,21 @@ namespace WordQuiz.Controllers
             return fooduserRepository.GetAllFoodusers().Result;
         }*/
 
-        // GET: api/<PlayerController>/all
         [HttpGet("all")]
-        public async Task<IEnumerable<PlayerInfoViewModel>> GetAllPlayers()
+        public async Task<IEnumerable<FooduserInfoViewModel>> GetAllFooduser()
         {
             var foodusers = fooduserRepository.GetAllFoodusers();
 
-            var playerInfos = new List<PlayerInfoViewModel>();
+            var playerInfos = new List<FooduserInfoViewModel>();
             foreach (var fooduser in foodusers)
             {
-                playerInfos.Add(new PlayerInfoViewModel
+                playerInfos.Add(new FooduserInfoViewModel
                 {
                     Id = fooduser.Id,
                     Email = fooduser.Email,                   
                     UserName = fooduser.UserName,
                     FoodUserName = fooduser.FoodUserName,
-
+                    Founds = fooduser.Founds,
                     IsAdmin = await userManager.IsInRoleAsync(fooduser, "Admin")
 
 
@@ -76,9 +75,8 @@ namespace WordQuiz.Controllers
         }
 
 
-        // GET api/<PlayerController>/5
         [HttpGet("{id}")]
-        public async Task<object> GetPlayer(string id)
+        public async Task<object> GetFooduser(string id)
         {
             FoodUser p = fooduserRepository.GetFooduserById(id);
             return new
@@ -91,10 +89,9 @@ namespace WordQuiz.Controllers
             };
         }
 
-        // GET api/<PlayerController>
         [HttpGet]
         [Authorize]
-        public async Task<object> GetPlayer()
+        public async Task<object> GetFooduser()
         {
             var authHeader = HttpContext.Request.Headers["Authorization"];
             System.Diagnostics.Debug.WriteLine("Authorization Header: " + authHeader); // Log the Authorization header
@@ -125,7 +122,7 @@ namespace WordQuiz.Controllers
         [Authorize]
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditPlayer(int id, [FromBody] FoodUser value)
+        public async Task<IActionResult> EditFooduser(int id, [FromBody] FoodUser value)
         {
             fooduserRepository.UpdateFooduser(value);
             return Ok();
@@ -134,9 +131,8 @@ namespace WordQuiz.Controllers
 
         [Authorize]
 
-        // DELETE api/<PlayerController>/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePlayer(string id)
+        public async Task<IActionResult> DeleteFooduser(string id)
         {
             fooduserRepository.DeleteFooduser(id);
             return Ok();

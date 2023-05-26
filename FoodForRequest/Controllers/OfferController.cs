@@ -68,10 +68,14 @@ namespace FoodForRequest.Controllers
             {
                 FoodId = value.FoodId,
                 ContractorId = value.ContractorId,
-                Choosen = false                
-                
+                Choosen = false
+
             };
+
             offerRepo.Create(offer);
+
+          
+
         }
 
 
